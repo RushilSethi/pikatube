@@ -18,6 +18,10 @@ const commentSchema = new mongoose.Schema({
 });
 
 const videoSchema = new mongoose.Schema({
+  videoUrl: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true,
