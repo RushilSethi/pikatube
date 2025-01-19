@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const userRoutes = require("./Routes/userRoutes");
+const channelRoutes = require("./Routes/channelRoutes");
+const videoRoutes = require("./Routes/videoRoutes");
+require("dotenv").config();
 
 
 mongoose.connect("mongodb://localhost:27017/youtube");
@@ -15,8 +18,10 @@ db.on("error", ()=>{
 
 const app = express();
 app.use(express.json());
-app.listen(3000, ()=>{
-    console.log("Server running on port 3000");
+app.listen(1000, ()=>{
+    console.log("Server running on port 1000");
 })
 
 app.use("/user", userRoutes);
+app.use("/channel", channelRoutes);
+app.use("/video", videoRoutes);

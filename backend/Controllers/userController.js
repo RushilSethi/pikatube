@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const User = require("../Models/userModel.js");
+const User = require("../Models/User");
 const jwt = require("jsonwebtoken");
 
 exports.registerUser = async (req, res) => {
@@ -15,12 +15,10 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: "Email is already registered." });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const user = new User({
       username,
       email,
-      password: hashedPassword,
+      password,
       avatar,
     });
 
@@ -31,6 +29,7 @@ exports.registerUser = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 exports.loginUser = async (req, res) => {
   try {
@@ -53,7 +52,7 @@ exports.loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, email: user.email },
+      { id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -68,7 +67,7 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+exports.fetchUserDetails = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -84,10 +83,6 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.editUserDetails = async (req, res) => {
+exports.editUserDetails = async (req, res) => {};
 
-}
-
-exports.deleteUser = async (req, res) => {
-  
-}
+exports.deleteUser = async (req, res) => {};

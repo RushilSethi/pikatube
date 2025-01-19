@@ -1,9 +1,9 @@
-const Channel = require("../Models/channelModel");
-const { findById } = require("../Models/userModel");
+const Channel = require("../Models/Channel");
+const User = require("../Models/User");
 
 exports.fetchChannelDetails = async (req, res) => {
   try {
-    const { channelId } = req.params;
+    const channelId = req.params.id;
 
     const channel = await Channel.findById(channelId);
 
@@ -35,15 +35,13 @@ exports.createChannel = async (req, res) => {
   const { channelName, description } = req.body;
 
   try {
-    const existingChannelByName = await Channel.findOne({ channelName });
-    if (existingChannelByName) {
+    const isChannelNameTaken = await Channel.findOne({ channelName });
+    if (isChannelNameTaken) {
       return res.status(400).json({ message: "Channel name already exists" });
     }
 
-    const existingChannelByUser = await Channel.findOne({
-      userId: req.user.id,
-    });
-    if (existingChannelByUser) {
+    const userHasChannel = await Channel.findOne({ userId: req.user.id });
+    if (userHasChannel) {
       return res.status(400).json({ message: "User already has a channel" });
     }
 
@@ -55,11 +53,15 @@ exports.createChannel = async (req, res) => {
     });
 
     const savedChannel = await newChannel.save();
+
+    await User.findByIdAndUpdate(req.user.id, { channelId: savedChannel._id });
+
     res.status(201).json(savedChannel);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 exports.updateChannel = async (req, res) => {
   const { id } = req.params;
@@ -96,12 +98,12 @@ exports.deleteChannel = async (req, res) => {
     });
 
     if (!channel) {
-      return res
-        .status(404)
-        .json({
-          message: "Channel not found or not authorized to delete this channel",
-        });
+      return res.status(404).json({
+        message: "Channel not found or not authorized to delete this channel",
+      });
     }
+
+    await User.findByIdAndUpdate(req.user.id, { $unset: { channelId: "" } });
 
     res.status(200).json({ message: "Channel deleted successfully" });
   } catch (error) {
