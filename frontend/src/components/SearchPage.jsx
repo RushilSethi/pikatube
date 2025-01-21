@@ -1,8 +1,11 @@
 import React from 'react'
+import SearchItemCard from './VideoCard/SearchItemCard'
 
 const SearchPage = () => {
   return (
-    <div>SearchPage</div>
+    <div className='p-4'>
+      <SearchItemCard />
+    </div>
   )
 }
 

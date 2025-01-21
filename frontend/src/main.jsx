@@ -5,8 +5,9 @@ import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import HomePage from './components/homePage.jsx'
 import SearchPage from './components/SearchPage.jsx'
-import VideoPlayerPage from './components/VideoPlayerPage.jsx'
+import VideoPlayerPage from './components/VideoPageTest.jsx'
 import ChannelPage from './components/ChannelPage.jsx'
+import UserPage from './components/UserPage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,8 @@ const router = createBrowserRouter([
       {path: "/", element: <HomePage />},
       {path: "/search", element: <SearchPage />},
       {path: "/video/:id", element: <VideoPlayerPage />},
-      {path: "/channel/:id", element: <ChannelPage />}
+      {path: "/channel/:id", element: <ChannelPage />},
+      {path: "/user/:id", element: <UserPage />}
     ]
   }
 ])

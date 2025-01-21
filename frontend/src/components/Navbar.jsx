@@ -3,12 +3,43 @@ import PropTypes from "prop-types";
 import PikachuLogo from "../assets/pikachu-logo.svg";
 import avatar from "../assets/avatars/1.svg";
 import Sidebar from "./Sidebar";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import LoginModal from "./Forms/LoginModal";
+import RegisterModal from "./Forms/RegisterModal";
+import pikachu from "../assets/pikachu.mp3";
 
 const Navbar = ({toggleSidebar}) => {
   const signedIn = false;
+  const [isUserFormOpen, setIsUserFormOpen] = useState("");
+  const handleOpenLogin = () => {
+    setIsUserFormOpen("login");
+  }
+  const handleOpenRegister = () => {
+    setIsUserFormOpen("register");
+  }
+  const handleUserFormClose = () => {
+    setIsUserFormOpen("");
+  }
+
+  const [isAnimating, setIsAnimating] = useState(false);
+  const audioRef = useRef(null);
+
+  const handlePikaPika = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    }
+    setIsAnimating(true);
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 2000);
+  };
   return (
     <>
+
+      <LoginModal isOpen={isUserFormOpen} handleRegister={handleOpenRegister} handleClose={handleUserFormClose}/>
+      <RegisterModal isOpen={isUserFormOpen} handleLogin={handleOpenLogin} handleClose={handleUserFormClose}/>
+
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div className="rounded-full hover:bg-hover p-2 m-2 cursor-pointer" onClick={toggleSidebar}>
@@ -53,7 +84,8 @@ const Navbar = ({toggleSidebar}) => {
           </div>
 
           {/* pikatube logo */}
-          <div className="flex items-center bg-textPrimary rounded-full px-3 py-1 m-1 cursor-pointer">
+          <div onClick={handlePikaPika} className={`flex items-center bg-textPrimary rounded-full px-3 py-1 m-1 cursor-pointer`}>
+            <audio ref={audioRef} src={pikachu} />
             <img src={PikachuLogo} className="w-8 h-8" />
             <span className="text-background font-bold text-lg">PikaTube</span>
           </div>
@@ -142,7 +174,7 @@ const Navbar = ({toggleSidebar}) => {
               </div>
             </div>
           ) : (
-            <div className="flex items-center rounded-full py-1 px-2 m-2 text-textPrimary bg-card gap-2 cursor-pointer hover:bg-accentBlue duration-300">
+            <div onClick={handleOpenLogin} className="flex items-center rounded-full py-1 px-2 m-2 text-textPrimary bg-card gap-2 cursor-pointer hover:bg-accentBlue duration-300">
               <div className="rounded-full border-textPrimary border-2 p-1.5">
                 <svg
                   viewBox="0 0 16 16"
