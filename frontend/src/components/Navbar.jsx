@@ -6,7 +6,7 @@ import Sidebar from "./Sidebar";
 import { useState } from "react";
 
 const Navbar = ({toggleSidebar}) => {
-  const signedIn = true;
+  const signedIn = false;
   return (
     <>
       <div className="flex items-center justify-between">

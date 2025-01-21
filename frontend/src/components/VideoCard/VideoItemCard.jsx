@@ -21,35 +21,27 @@ const VideoItemCard = () => {
 
 
   return (
-    <div className="flex flex-col w-full max-w-xs text-textPrimary bg-background rounded-lg hover:scale-105 transition-transform duration-200 cursor-pointer">
-      {/* Thumbnail */}
+    <div className="flex flex-col flex-grow text-textPrimary bg-background rounded-lg hover:scale-105 transition-transform duration-200 cursor-pointer">
       <img
         src={thumbnail}
         alt="Video Thumbnail"
-        className="w-full h-48 object-cover rounded-t-lg"
+        className="w-full object-cover rounded-t-lg"
       />
 
-      {/* Video Details */}
-      <div className="flex p-4 gap-3">
-        {/* Channel Avatar */}
+      <div className="flex p-2 gap-3">
         <img
           src={channelAvatar}
           alt={`${channelName} Avatar`}
           className="w-10 h-10 rounded-full"
         />
 
-        {/* Title and Info */}
         <div className="flex flex-col flex-1">
-          {/* Title */}
-          <h3 className="text-sm font-semibold text-ellipsis overflow-hidden whitespace-nowrap">
+          <h3 className="text-md font-semibold line-clamp-2">
             {title}
           </h3>
 
-          {/* Channel Name */}
-          <p className="text-sm text-gray-400">{channelName}</p>
-
-          {/* Views and Upload Time */}
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-textSecondary">{channelName}</p>
+          <p className="text-sm text-textSecondary">
             {views} views • {uploadTime}
           </p>
         </div>
