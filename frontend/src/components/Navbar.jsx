@@ -1,16 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 import PikachuLogo from "../assets/pikachu-logo.svg";
 import avatar from "../assets/avatars/1.svg";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
 
-const Navbar = () => {
+const Navbar = ({toggleSidebar}) => {
   const signedIn = true;
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
   return (
     <>
       <div className="flex items-center justify-between">
@@ -174,9 +170,12 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar}/>
     </>
   );
+};
+
+Navbar.propTypes = {
+  toggleSidebar: PropTypes.func.isRequired,
 };
 
 export default Navbar;

@@ -1,13 +1,25 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
-const VideoItemCard = ({
-  thumbnail,
-  title,
-  channelName,
-  channelAvatar,
-  views,
-  uploadTime,
-}) => {
+// const VideoItemCard = ({
+//   thumbnail,
+//   title,
+//   channelName,
+//   channelAvatar,
+//   views,
+//   uploadTime,
+// }) => {
+
+import thumbnail from "../../assets/test_object/thumbnail.avif";
+import channelAvatar from "../../assets/test_object/channel_profile.jpg";
+
+const VideoItemCard = () => {
+  const title = "this portfolio got me hired in the gaming industry";
+  const channelName = "My GameDev Pal";
+  const views = 15;
+  const uploadTime = "4 Months ago";
+
+
+
   return (
     <div className="flex flex-col w-full max-w-xs text-textPrimary bg-background rounded-lg hover:scale-105 transition-transform duration-200 cursor-pointer">
       {/* Thumbnail */}
@@ -46,13 +58,13 @@ const VideoItemCard = ({
   );
 };
 
-VideoItemCard.propTypes = {
-  thumbnail: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  channelName: PropTypes.string.isRequired,
-  channelAvatar: PropTypes.string.isRequired,
-  views: PropTypes.string.isRequired,
-  uploadTime: PropTypes.string.isRequired,
-};
+// VideoItemCard.propTypes = {
+//   thumbnail: PropTypes.string.isRequired,
+//   title: PropTypes.string.isRequired,
+//   channelName: PropTypes.string.isRequired,
+//   channelAvatar: PropTypes.string.isRequired,
+//   views: PropTypes.string.isRequired,
+//   uploadTime: PropTypes.string.isRequired,
+// };
 
 export default VideoItemCard;

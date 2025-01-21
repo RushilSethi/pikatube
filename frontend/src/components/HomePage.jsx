@@ -1,8 +1,11 @@
 import React from 'react'
+import VideoItemCard from './VideoCard/VideoItemCard'
 
 const HomePage = () => {
   return (
-    <div>HomePage</div>
+    <div className='p-2'>
+      <VideoItemCard />
+    </div>
   )
 }
 
