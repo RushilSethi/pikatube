@@ -41,9 +41,6 @@ const VideoPage = ({
               </div>
               <div>
                 <h3 className="text-xl font-bold">{channelDetails.name}</h3>
-                <p className="text-textSecondary">
-                  Subscribers: {channelDetails.subscriberCount}
-                </p>
               </div>
               <button
                 onClick={handleSubscribe}

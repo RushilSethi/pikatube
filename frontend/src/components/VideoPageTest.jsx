@@ -1,4 +1,3 @@
-import React from "react";
 import VideoPage from "./VideoPage";
 
 const VideoPageTest = () => {
