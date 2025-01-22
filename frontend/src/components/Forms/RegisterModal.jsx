@@ -18,14 +18,10 @@ const RegisterModal = ({ isOpen, handleClose, handleLogin }) => {
 
   useEffect(() => {
     if (isOpen) {
-      // Prevent scrolling when modal is open
       document.body.style.overflow = "hidden";
     } else {
-      // Re-enable scrolling when modal is closed
       document.body.style.overflow = "auto";
     }
-
-    // Cleanup: reset the overflow when the component is unmounted or modal is closed
     return () => {
       document.body.style.overflow = "auto";
     };

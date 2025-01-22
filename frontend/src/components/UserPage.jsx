@@ -1,18 +1,11 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import icon1 from "../assets/avatars/1.svg";
-import icon2 from "../assets/avatars/2.svg";
-import icon3 from "../assets/avatars/3.svg";
-import icon4 from "../assets/avatars/4.svg";
-import icon5 from "../assets/avatars/5.svg";
-import icon6 from "../assets/avatars/6.svg";
 import LoginModal from "./Forms/LoginModal";
 import RegisterModal from "./Forms/RegisterModal";
-
-const avatars = [icon1, icon2, icon3, icon4, icon5, icon6];
+import AvatarShow from "./Helpers/AvatarShow";
 
 const UserPage = ({ isSignedIn, userDetails, handleLogin, handleRegister }) => {
-  isSignedIn = false
+  isSignedIn = true
 
   userDetails = {
     username: "John Doe",
@@ -41,11 +34,9 @@ const UserPage = ({ isSignedIn, userDetails, handleLogin, handleRegister }) => {
         {isSignedIn ? (
           <div className="flex flex-col items-center">
             <h2 className="text-2xl font-bold mb-4">Welcome, {userDetails.username}!</h2>
-            <img
-              src={avatars[userDetails.avatar - 1]}
-              alt="User Avatar"
-              className="w-48 h-48"
-            />
+            <div className="w-48 h-48">
+              <AvatarShow avatarUrl={userDetails.avatar}/>
+            </div>
             <p className="text-lg">Email: {userDetails.email}</p>
           </div>
         ) : (
