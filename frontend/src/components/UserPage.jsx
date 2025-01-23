@@ -5,12 +5,13 @@ import RegisterModal from "./Forms/RegisterModal";
 import AvatarShow from "./Helpers/AvatarShow";
 
 const UserPage = ({ isSignedIn, userDetails, handleLogin, handleRegister }) => {
-  isSignedIn = true
+  isSignedIn = false
 
   userDetails = {
     username: "John Doe",
     email: "johndoe@example.com",
     avatar: 3,
+    hasChannel: false
   }
 
 
@@ -38,6 +39,31 @@ const UserPage = ({ isSignedIn, userDetails, handleLogin, handleRegister }) => {
               <AvatarShow avatarUrl={userDetails.avatar}/>
             </div>
             <p className="text-lg">Email: {userDetails.email}</p>
+
+            <div className="mt-6 flex flex-col gap-4">
+    <button
+      // onClick={handleEditUserDetails}
+      className="px-6 py-2 bg-textPrimary text-background font-medium rounded-md duration-200 hover:bg-hover hover:text-textPrimary transition"
+    >
+      Edit User Details
+    </button>
+
+    {userDetails.hasChannel ? (
+      <button
+        // onClick={handleEditChannelDetails}
+        className="px-6 py-2 bg-textPrimary text-background font-medium rounded-md duration-200 hover:bg-hover hover:text-textPrimary transition"
+      >
+        Edit Channel Details
+      </button>
+    ) : (
+      <button
+        // onClick={handleCreateChannel}
+        className="px-6 py-2 bg-textPrimary text-background font-medium rounded-md duration-200 hover:bg-hover hover:text-textPrimary transition"
+      >
+        Create a Channel
+      </button>
+    )}
+  </div>
           </div>
         ) : (
 
@@ -52,7 +78,7 @@ const UserPage = ({ isSignedIn, userDetails, handleLogin, handleRegister }) => {
               </button>
               <button
                 onClick={handleOpenRegister}
-                className="px-6 py-2 rounded bg-textPrimary text-background hover:bg-hover duration-200"
+                className="px-6 py-2 rounded bg-textPrimary text-background hover:bg-hover hover:text-textPrimary duration-200"
               >
                 Register
               </button>

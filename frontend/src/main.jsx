@@ -5,9 +5,11 @@ import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import HomePage from './components/homePage.jsx'
 import SearchPage from './components/SearchPage.jsx'
-import VideoPlayerPage from './components/VideoPageTest.jsx'
+import VideoPage from './components/VideoPage.jsx'
 import ChannelPage from './components/ChannelPage.jsx'
-import UserPage from './components/UserPage.jsx'
+import UserPage from './components/UserPage.jsx';
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +19,7 @@ const router = createBrowserRouter([
     children: [
       {path: "/", element: <HomePage />},
       {path: "/search", element: <SearchPage />},
-      {path: "/video/:id", element: <VideoPlayerPage />},
+      {path: "/video/:id", element: <VideoPage />},
       {path: "/channel/:id", element: <ChannelPage />},
       {path: "/user/:id", element: <UserPage />}
     ]
@@ -26,8 +28,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* <Provider store={productStore}> */}
+    <Provider store={store}>
         <RouterProvider router={router}/>
-    {/* </Provider> */}
+    </Provider>
   </StrictMode>
 )

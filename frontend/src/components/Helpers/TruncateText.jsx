@@ -1,6 +1,29 @@
-const truncateText = (text, length) => {
-  if (text.length <= length) return text;
-  return text.slice(0, length) + "...";
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+
+const TruncateText = ({ text, length }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const truncatedText = isExpanded ? text : text.substring(0, length) + (text.length > length ? '...' : '');
+
+  return (
+    <div>
+      {truncatedText}
+      {text.length > length && ( 
+        <span 
+          className="text-blue-500 cursor-pointer" 
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {isExpanded ? ' Read Less' : ` Read More`}
+        </span>
+      )}
+    </div>
+  );
 };
 
-export default truncateText;
+TruncateText.propTypes = {
+  text: PropTypes.string.isRequired,
+  length: PropTypes.number.isRequired,
+};
+
+export default TruncateText;
