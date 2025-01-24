@@ -1,34 +1,50 @@
 import { useParams } from "react-router-dom";
 import AvatarShow from "./Helpers/AvatarShow";
 import VideoItemCard from "./VideoCard/VideoItemCard";
-import { useFetchChannelByIdQuery } from "../store/apiSlice";
+import { useFetchChannelByIdQuery, useFetchUserDetailsByIdQuery } from "../store/apiSlice";
 import Loader from "./Helpers/Loader";
 import ChannelPage_videos from "./ChannelPage_videos";
 import TruncateText from "./Helpers/TruncateText";
+import {useState, useEffect} from 'react';
 
 const ChannelPage = () => {
   const { id } = useParams();
 
   const {
     data: channelDetails,
-    error,
-    isLoading,
+    error: channelError,
+    isLoading: channelLoading,
   } = useFetchChannelByIdQuery(id);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  const [userId, setUserId] = useState(null);
+  const [shouldFetchUser, setShouldFetchUser] = useState(false);
 
-  if (error) {
-    return (
-      <p className="text-center text-red-500">
-        Error loading channel. Please try again later.
-      </p>
-    );
+  const {
+    data: userDetails,
+    error: userError,
+    isLoading: userLoading,
+  } = useFetchUserDetailsByIdQuery(userId, {
+    skip: !shouldFetchUser || !userId,
+  });
+
+  useEffect(() => {
+    if (!channelLoading && channelDetails?.userId) {
+      setUserId(channelDetails.userId);
+      setShouldFetchUser(true);
+    }
+  }, [channelLoading, channelDetails]);
+
+  if (channelLoading || userLoading) return <Loader />;
+
+  if (channelError) {
+    return <p className="text-center text-red-500">Error loading channel details. Please try again later.</p>;
+  }
+  if (userError) {
+    return <p className="text-center text-red-500">Error loading user details. Please try again later.</p>;
   }
 
   const handleSubscribe = () => {
-    console.log("Toggled subscription!");
+    console.log("Subscription toggled!");
   };
 
   return (
@@ -42,9 +58,9 @@ const ChannelPage = () => {
             <div className="text-3xl font-bold">
               {channelDetails.channelName}
             </div>
-            <div className="text-textSecondary">{}</div>
+            <div className="text-textSecondary">@{userDetails?.username || ""}</div>
             <div className="text-textSecondary">
-              {channelDetails.videos.length}
+              {channelDetails.videos.length} video(s)
             </div>
             <div className="text-textSecondary">
               <TruncateText

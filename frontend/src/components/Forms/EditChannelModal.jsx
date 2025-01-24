@@ -1,13 +1,23 @@
-import { useState } from "react";
-import { useCreateChannelMutation } from "../../store/apiSlice";
+import { useState, useEffect } from "react";
 import useCustomToast from "../Helpers/useCustomToast";
+import { useFetchChannelByIdQuery, useUpdateChannelInfoMutation } from "../../store/apiSlice";
 
-const CreateChannelModal = ({ isOpen, handleClose }) => {
+const EditChannelModal = ({ isOpen, handleClose, userDetails }) => {
   const [channelName, setChannelName] = useState("");
   const [description, setDescription] = useState("");
 
-  const [createChannel, {isLoading}] = useCreateChannelMutation();
+  const channelId = userDetails.channelId;
+  const {data: channel, error, isChannelLoading} = useFetchChannelByIdQuery(channelId);
+
+  const [updateChannelInfo, {isLoading}] = useUpdateChannelInfoMutation();
   const { showToast } = useCustomToast();
+
+  useEffect(() => {
+    if (channel) {
+      setChannelName(channel.channelName || "");
+      setDescription(channel.description || "");
+    }
+  }, [channel]);
 
   const handleCancel = () => {
     setChannelName("");
@@ -24,12 +34,12 @@ const CreateChannelModal = ({ isOpen, handleClose }) => {
     }
 
     try {
-      const response = await createChannel({ channelName, description }).unwrap();
-      console.log(response);
-      showToast("success", `Channel created successfully.`);
+      const response = await updateChannelInfo({ id: channelId, body: {channelName: channelName, description} }).unwrap();
+        console.log(response);
+      showToast("success", `Channel updated successfully.`);
       handleCancel();
     } catch (error) {
-      showToast("error", error?.data?.message || "Failed to create the channel. Please try again.");
+      showToast("error", error?.data?.message || "Failed to update the channel. Please try again.");
     }
   };
 
@@ -37,7 +47,7 @@ const CreateChannelModal = ({ isOpen, handleClose }) => {
     isOpen && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 text-textPrimary">
         <div className="bg-card p-6 rounded-lg shadow-lg w-96">
-          <h2 className="text-xl font-bold mb-4">Create Channel</h2>
+          <h2 className="text-xl font-bold mb-4">Edit Channel</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-sm font-medium mb-2" htmlFor="channelName">
@@ -80,7 +90,7 @@ const CreateChannelModal = ({ isOpen, handleClose }) => {
                   isLoading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
-                {isLoading ? "Creating..." : "Create"}
+                {isLoading ? "Updating..." : "Update"}
               </button>
             </div>
           </form>
@@ -90,4 +100,4 @@ const CreateChannelModal = ({ isOpen, handleClose }) => {
   );
 };
 
-export default CreateChannelModal;
+export default EditChannelModal;

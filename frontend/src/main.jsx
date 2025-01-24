@@ -10,6 +10,7 @@ import ChannelPage from './components/ChannelPage.jsx'
 import UserPage from './components/UserPage.jsx';
 import { Provider } from "react-redux";
 import store from "./store/store";
+import CustomToastContainer from "./components/Helpers/CustomToastContainer";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
     // errorElement: <ErrorElement />,
     children: [
       {path: "/", element: <HomePage />},
-      {path: "/search", element: <SearchPage />},
+      {path: "/search/*", element: <SearchPage />},
       {path: "/video/:id", element: <VideoPage />},
       {path: "/channel/:id", element: <ChannelPage />},
       {path: "/user/:id", element: <UserPage />}
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
+        <CustomToastContainer />
         <RouterProvider router={router}/>
     </Provider>
   </StrictMode>

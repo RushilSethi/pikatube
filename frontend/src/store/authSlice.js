@@ -8,6 +8,7 @@ const authSlice = createSlice({
   reducers: {
     signIn: (state) => {
       state.isSignedIn = true;
+      console.log("user signed in via redux")
     },
     signOut: (state) => {
       state.isSignedIn = false;

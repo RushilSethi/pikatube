@@ -1,4 +1,4 @@
-import { useFetchVideosQuery } from "../store/apiSlice"; // Import the query hook
+import { useFetchVideosQuery } from "../store/apiSlice";
 import Loader from "./Helpers/Loader";
 import VideoItemCard from "./VideoCard/VideoItemCard";
 

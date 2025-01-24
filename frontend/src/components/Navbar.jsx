@@ -1,27 +1,50 @@
-import React from "react";
 import PropTypes from "prop-types";
 import PikachuLogo from "../assets/pikachu-logo.svg";
 import avatar from "../assets/avatars/1.svg";
-import Sidebar from "./Sidebar";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import LoginModal from "./Forms/LoginModal";
 import RegisterModal from "./Forms/RegisterModal";
 import pikachu from "../assets/pikachu.mp3";
+import { useSelector } from "react-redux";
+import AvatarShow from "./Helpers/AvatarShow";
+import { useFetchUserDetailsByIdQuery } from "../store/apiSlice";
+import { useNavigate } from "react-router-dom";
 
-const Navbar = ({toggleSidebar}) => {
-  const signedIn = false;
+const Navbar = ({ toggleSidebar }) => {
+  const navigate = useNavigate();
+  const isSignedIn = useSelector((state) => state.auth.isSignedIn);
+  const userId = useSelector((state) => state.user.userId);
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [searchText, setSearchText] = useState("");
+
   const [isUserFormOpen, setIsUserFormOpen] = useState("");
   const handleOpenLogin = () => {
     setIsUserFormOpen("login");
-  }
+  };
   const handleOpenRegister = () => {
     setIsUserFormOpen("register");
-  }
+  };
   const handleUserFormClose = () => {
     setIsUserFormOpen("");
-  }
+  };
+  const {
+    data: userDetails,
+    error,
+    isLoading,
+  } = useFetchUserDetailsByIdQuery(userId, {
+    skip: !isSignedIn || !userId,
+  });
 
-  const [isAnimating, setIsAnimating] = useState(false);
+  useEffect(() => {
+    if (userDetails) {
+      setAvatarUrl(userDetails.avatar);
+    }
+  }, [userDetails]);
+
+  const handleAvatarClick = () => {
+    navigate(`/user/${userId}`);
+  };
+
   const audioRef = useRef(null);
 
   const handlePikaPika = () => {
@@ -29,20 +52,32 @@ const Navbar = ({toggleSidebar}) => {
       audioRef.current.currentTime = 0;
       audioRef.current.play();
     }
-    setIsAnimating(true);
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 2000);
   };
+
+  const handleSearch = () => {
+    if(searchText.trim() !== ""){
+      navigate(`/search/${searchText}`);
+    }
+  }
   return (
     <>
-
-      <LoginModal isOpen={isUserFormOpen} handleRegister={handleOpenRegister} handleClose={handleUserFormClose}/>
-      <RegisterModal isOpen={isUserFormOpen} handleLogin={handleOpenLogin} handleClose={handleUserFormClose}/>
+      <LoginModal
+        isOpen={isUserFormOpen}
+        handleRegister={handleOpenRegister}
+        handleClose={handleUserFormClose}
+      />
+      <RegisterModal
+        isOpen={isUserFormOpen}
+        handleLogin={handleOpenLogin}
+        handleClose={handleUserFormClose}
+      />
 
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <div className="rounded-full hover:bg-hover p-2 m-2 cursor-pointer" onClick={toggleSidebar}>
+          <div
+            className="rounded-full hover:bg-hover p-2 m-2 cursor-pointer"
+            onClick={toggleSidebar}
+          >
             {/* Menu Icon */}
             <svg
               viewBox="-0.5 0 25 25"
@@ -84,7 +119,10 @@ const Navbar = ({toggleSidebar}) => {
           </div>
 
           {/* pikatube logo */}
-          <div onClick={handlePikaPika} className={`flex items-center bg-textPrimary rounded-full px-3 py-1 m-1 cursor-pointer`}>
+          <div
+            onClick={handlePikaPika}
+            className={`flex items-center bg-textPrimary rounded-full px-3 py-1 m-1 cursor-pointer active:scale-95 transition-transform duration-200`}
+          >
             <audio ref={audioRef} src={pikachu} />
             <img src={PikachuLogo} className="w-8 h-8" />
             <span className="text-background font-bold text-lg">PikaTube</span>
@@ -94,8 +132,10 @@ const Navbar = ({toggleSidebar}) => {
         {/* search bar */}
         <div className="flex items-center">
           <input
-            className="searchbar w-96 bg-card border-border border-2 text-textPrimary p-1.5 rounded-full focus:outline-none focus:border-accentBlue"
+            className="searchbar w-96 bg-card border-border border-2 text-textPrimary px-3 py-1.5 rounded-full focus:outline-none focus:border-accentBlue"
             placeholder="Search"
+            onChange={(e)=>setSearchText(e.target.value)}
+            value = {searchText}
           />
           <style>{`
         .searchbar::placeholder {
@@ -103,7 +143,7 @@ const Navbar = ({toggleSidebar}) => {
         }
       `}</style>
           {/* search icon */}
-          <div className="rounded-full bg-hover p-2 m-2 cursor-pointer">
+          <div className="rounded-full bg-hover p-2 m-2 cursor-pointer" onClick={handleSearch}>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -138,7 +178,7 @@ const Navbar = ({toggleSidebar}) => {
 
         {/* sign in / add video and account */}
         <div>
-          {signedIn ? (
+          {isSignedIn ? (
             <div className="flex items-center">
               <div className="flex items-center text-textPrimary gap-1 bg-card px-2 py-1.5 m-2 rounded-full cursor-pointer hover:bg-hover">
                 <>
@@ -169,12 +209,18 @@ const Navbar = ({toggleSidebar}) => {
                 </>
                 Create
               </div>
-              <div className="mx-2 h-12 w-12 cursor-pointer bg-card rounded-full">
-                <img src={avatar} className="w-[118%] h-[118%]" />
+              <div
+                className="w-11 h-11 mx-4 cursor-pointer"
+                onClick={handleAvatarClick}
+              >
+                <AvatarShow avatarUrl={avatarUrl} />
               </div>
             </div>
           ) : (
-            <div onClick={handleOpenLogin} className="flex items-center rounded-full py-1 px-2 m-2 text-textPrimary bg-card gap-2 cursor-pointer hover:bg-accentBlue duration-300">
+            <div
+              onClick={handleOpenLogin}
+              className="flex items-center rounded-full py-1 px-2 m-2 text-textPrimary bg-card gap-2 cursor-pointer hover:bg-accentBlue duration-300"
+            >
               <div className="rounded-full border-textPrimary border-2 p-1.5">
                 <svg
                   viewBox="0 0 16 16"
