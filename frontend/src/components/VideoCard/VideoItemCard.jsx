@@ -7,7 +7,7 @@ const VideoItemCard = ({
   thumbnail,
   title,
   channelName,
-  channelAvatar,
+  avatar,
   views,
   uploadTime,
 }) => {
@@ -22,7 +22,7 @@ const VideoItemCard = ({
 
         <div className="flex p-2 gap-3">
           <div className="w-10 h-10">
-            <AvatarShow avatarUrl={channelAvatar} />
+            <AvatarShow avatarUrl={avatar} />
           </div>
 
           <div className="flex flex-col flex-1">

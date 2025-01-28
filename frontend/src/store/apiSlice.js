@@ -9,7 +9,7 @@ export const apiSlice = createApi({
 
       headers.set("Content-Type", "application/json");
 
-      const endpointsRequiringAuth = ["updateUserDetails", "createChannel", "updateChannelInfo"];
+      const endpointsRequiringAuth = ["updateUserDetails", "createChannel", "updateChannelInfo", "addVideoByChannelId", "deleteVideoById", "editVideoById", "deleteChannelById", "deleteUserById"];
       if (token && endpointsRequiringAuth.includes(endpoint)) {
         headers.set("Authorization", `JWT ${token}`);
       }
@@ -17,16 +17,18 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User", "Channel"],
+  tagTypes: ["User", "Channel", "Video"],
   endpoints: (builder) => ({
     fetchVideos: builder.query({
       query: () => "/video",
+      providesTags: (result, error, id) => [{ type: 'Video', id }],
     }),
     fetchVideoById: builder.query({
       query: (id) => `/video/${id}`,
     }),
     fetchChannelById: builder.query({
       query: (id) => `/channel/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Video', id }],
     }),
     registerUser: builder.mutation({
       query: (body) => ({
@@ -74,8 +76,57 @@ export const apiSlice = createApi({
         url: `channel/${id}`,
         method: "PUT",
         body
-      })
-    })
+      }),
+      invalidatesTags: ({ id }) => [{ type: 'Channel', id }],
+    }),
+    addVideoByChannelId: builder.mutation({
+      query: ({channelId, body}) => ({
+        url: `/video/${channelId}`,
+        method: "POST",
+        body
+      }),
+      invalidatesTags: ({ id }) => [{ type: 'Video', id }],
+    }),
+    deleteVideoById: builder.mutation({
+      query: ({ id }) => ({
+        url: `/video/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ({ id }) => [{ type: 'Channel', id }, { type: 'Video', id }],
+    }),
+    editVideoById: builder.mutation({
+      query: ({id, body}) => ({
+        url: `/video/${id}`,
+        method: "PUT",
+        body
+      }),
+      invalidatesTags: ({ id }) => [{ type: 'Video', id }, {type: 'Channel', id}],
+    }),
+    getMultipleVideosByIds: builder.mutation({
+      query: (videoIds) => ({
+        url: '/video/by-ids',
+        method: "POST",
+        body: {videoIds}
+      }),
+      providesTags: (id) => [{ type: 'Video', id }],
+    }),
+    deleteChannelById: builder.mutation({
+      query: ({id}) => ({
+        url: `/channel/${id}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ({ id }) => [{type: 'Channel', id}],
+    }),
+    deleteUserById: builder.mutation({
+      query: ({id}) => ({
+        url: `/user/${id}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ({ id }) => [{type: 'User', id}],
+    }),
+    searchVideosAndChannels: builder.query({
+      query: (query) => `/search?query=${query}`,
+    }),
   }),
 });
 
@@ -90,5 +141,11 @@ export const {
   useUpdateUserDetailsMutation,
   useCreateChannelMutation,
   useUpdateChannelInfoMutation,
-  
+  useAddVideoByChannelIdMutation,
+  useDeleteVideoByIdMutation,
+  useEditVideoByIdMutation,
+  useGetMultipleVideosByIdsMutation,
+  useDeleteChannelByIdMutation,
+  useDeleteUserByIdMutation,
+  useSearchVideosAndChannelsQuery
 } = apiSlice;

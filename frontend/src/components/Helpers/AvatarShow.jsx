@@ -18,17 +18,19 @@ const AvatarShow = ({ avatarUrl }) => {
 
   return (
     <>
-      <img src={avatarSrc} alt="User Avatar" className="rounded-full"/>
+      <img src={avatarSrc || 1} alt="User Avatar" className="rounded-full"/>
     </>
   );
 };
 
 AvatarShow.propTypes = {
   avatarUrl: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-    .isRequired,
 };
 
 export default AvatarShow;
+
+
+
 
 
 

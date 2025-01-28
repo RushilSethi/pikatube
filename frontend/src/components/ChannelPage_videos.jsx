@@ -3,7 +3,7 @@ import VideoItemCard from "./VideoCard/VideoItemCard";
 import Loader from "./Helpers/Loader"
 import PropTypes from "prop-types";
 
-const ChannelPage_videos = ({ videos }) => {
+const ChannelPage_videos = ({ videos, avatar }) => {
   if (!videos || videos.length === 0) {
     return <p>No videos available.</p>;
   }
@@ -29,6 +29,7 @@ const ChannelPage_videos = ({ videos }) => {
                       title={video.title}
                       thumbnail={video.thumbnailUrl}
                       channelName={video.channelName}
+                      avatar = {avatar}
                       views={video.views}
                       uploadTime={video.uploadDate}
                       description={video.description}
@@ -42,6 +43,7 @@ const ChannelPage_videos = ({ videos }) => {
 
 ChannelPage_videos.propTypes = {
   videos: PropTypes.arrayOf(PropTypes.string).isRequired,
+  avatar: PropTypes.string.isRequired
 };
 
 export default ChannelPage_videos;

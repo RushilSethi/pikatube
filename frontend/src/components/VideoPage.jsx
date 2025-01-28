@@ -3,16 +3,19 @@ import ReactPlayer from "react-player";
 import AvatarShow from "./Helpers/AvatarShow";
 import { useParams, Link } from "react-router-dom";
 import {
-  useFetchChannelByIdQuery,
   useFetchVideoByIdQuery,
 } from "../store/apiSlice";
 import Loader from "./Helpers/Loader";
 import TruncateText from "./Helpers/TruncateText";
+import { useSelector } from "react-redux";
 
 const VideoPage = () => {
   const subscribedList = {
     isSubscribed: true,
   };
+
+  const [comment, setComment] = useState("");
+  const isSignedIn = useSelector((state) => state.auth.isSignedIn);
   const { id } = useParams();
 
   const {
@@ -21,31 +24,12 @@ const VideoPage = () => {
     isLoading: isVideoLoading,
   } = useFetchVideoByIdQuery(id);
 
-  const [channelId, setChannelId] = useState(null);
-  const [shouldFetchChannel, setShouldFetchChannel] = useState(false);
+  if (isVideoLoading) return <Loader />;
 
-  const {
-    data: channelDetails,
-    error: channelError,
-    isLoading: isChannelLoading,
-  } = useFetchChannelByIdQuery(channelId, {
-    skip: !shouldFetchChannel || !channelId,
-  });
-
-  useEffect(() => {
-    if (!isVideoLoading && videoDetails?.channelId) {
-      setChannelId(videoDetails.channelId);
-      setShouldFetchChannel(true);
-    }
-  }, [isVideoLoading, videoDetails]);
-
-  if (isVideoLoading || isChannelLoading) return <Loader />;
-
-  if (videoError || channelError) {
+  if (videoError) {
     return (
       <div>
         {videoError && <p>Error fetching video: {videoError.message}</p>}
-        {channelError && <p>Error fetching channel: {channelError.message}</p>}
       </div>
     );
   }
@@ -55,6 +39,14 @@ const VideoPage = () => {
   function handleLike() {}
 
   function handleDislike() {}
+
+  function postComment(e) {
+    e.preventDefault();
+    if(!isSignedIn){
+      return;
+    }
+
+  }
   return (
     <div className="flex flex-col items-center p-3 bg-background text-textPrimary min-h-screen w-full">
       <div className="w-full max-w-5xl aspect-video rounded-md overflow-hidden shadow-lg">
@@ -80,15 +72,15 @@ const VideoPage = () => {
         <div className="w-full max-w-5xl mt-8 p-4 bg-card rounded-md shadow-md">
           <div className="flex items-center justify-between">
             <div className="flex flex-row items-center gap-3">
-              <Link to={`/channel/${channelId}`} className="cursor-pointer">
+              <Link to={`/channel/${videoDetails.channelId}`} className="cursor-pointer">
                 <div className="h-12 w-12">
-                  <AvatarShow avatarUrl={channelDetails?.avatarUrl} />
+                  <AvatarShow avatarUrl={videoDetails.avatar} />
                 </div>
               </Link>
-              <Link to={`/channel/${channelId}`} className="cursor-pointer">
+              <Link to={`/channel/${videoDetails.channelId}`} className="cursor-pointer">
                 <div>
                   <h3 className="text-xl font-bold">
-                    {channelDetails?.channelName}
+                    {videoDetails.channelName}
                   </h3>
                 </div>
               </Link>
@@ -142,9 +134,12 @@ const VideoPage = () => {
           />
           <button
             type="submit"
-            className="bg-card text-white py-2 px-4 rounded-md w-max self-start border-accentBlue border-2 duration-200 hover:bg-accentBlue"
+            onClick={postComment}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            className={`bg-card text-white py-2 px-4 rounded-md w-max self-start border-accentBlue border-2 duration-200 hover:bg-accentBlue ${isSignedIn ? "" : "grayscale"}`}
           >
-            Post Comment
+            {isSignedIn ? "Post Comment" : "Sign in to Comment"}
           </button>
         </form>
         <div className="space-y-4">

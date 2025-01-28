@@ -11,6 +11,7 @@ import logoutIcon from "../assets/navbarIcons/logout.svg"
 import useCustomToast from "./Helpers/useCustomToast";
 import { useDispatch } from "react-redux";
 import { signOut } from "../store/authSlice";
+import { clearUserId } from "../store/userSlice";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
@@ -35,9 +36,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   function LogoutClick(){
     showToast("confirm", "Are you sure you want to log out?", (confirmed) => {
       if (confirmed) {
-        localStorage.removeItem("AuthToken"); // Remove the token
-        dispatch(signOut()); // Set user as signed out
-        navigate("/"); // Redirect to the home page or login screen
+        dispatch(signOut());
+        dispatch(clearUserId());
+        navigate("/");
       }
     });
   }

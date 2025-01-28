@@ -74,6 +74,7 @@ const RegisterModal = ({ isOpen, handleClose, handleLogin }) => {
       dispatch(signIn());
     } catch (error) {
       setErrorMessage("Registration failed. Please try again.");
+      console.log(error);
       showToast("error", error.data.message);
     }
   };

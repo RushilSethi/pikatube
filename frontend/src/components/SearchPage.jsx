@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import SearchItemCard from './VideoCard/SearchItemCard'
 import SearchItemChannelCard from './VideoCard/SearchItemChannelCard'
 import { useParams } from "react-router-dom"
+import { useSearchVideosAndChannelsQuery } from '../store/apiSlice'
 
 // add tags to filter between vidoes and channels 
 const SearchPage = () => {
@@ -10,18 +11,6 @@ const SearchPage = () => {
   const [channels, setChannels] = useState([]); // State for channels
   const [filter, setFilter] = useState('all');
 
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      try {
-        const response = await axios.get(`/api/search?q=${searchQuery}`); // Backend API for searching
-        setVideos(response.data.videos || []); // Set the video results
-        setChannels(response.data.channels || []); // Set the channel results
-      } catch (error) {
-        console.error('Error fetching search results:', error);
-      }
-    };
-    fetchSearchResults();
-  }, [searchQuery]);
   return (
     <div className='p-4'>
       <div className="flex justify-between items-center mb-4">

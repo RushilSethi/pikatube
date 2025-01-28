@@ -52,7 +52,7 @@ const ChannelPage = () => {
       <div className="w-full flex flex-row px-32 items-start">
         <div className="text-textPrimary flex items-center">
           <div className="w-48 h-48">
-            <AvatarShow avatarUrl={2} />
+            <AvatarShow avatarUrl={userDetails?.avatar} />
           </div>
           <div>
             <div className="text-3xl font-bold">
@@ -87,7 +87,7 @@ const ChannelPage = () => {
       <hr className="border-t-2 border-border my-4" />
 
       <div className="p-8">
-        <ChannelPage_videos videos={channelDetails.videos} />
+        <ChannelPage_videos videos={channelDetails.videos} avatar={userDetails?.avatar}/>
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import PikachuLogo from "../assets/pikachu-logo.svg";
-import avatar from "../assets/avatars/1.svg";
 import { useState, useRef, useEffect } from "react";
 import LoginModal from "./Forms/LoginModal";
 import RegisterModal from "./Forms/RegisterModal";
+import AddVideoModal from "./Forms/AddVideoModal"
 import pikachu from "../assets/pikachu.mp3";
 import { useSelector } from "react-redux";
 import AvatarShow from "./Helpers/AvatarShow";
@@ -17,6 +17,7 @@ const Navbar = ({ toggleSidebar }) => {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [searchText, setSearchText] = useState("");
 
+  const [isAddVideoFormOpen, setIsAddVideoFormOpen] = useState(false);
   const [isUserFormOpen, setIsUserFormOpen] = useState("");
   const handleOpenLogin = () => {
     setIsUserFormOpen("login");
@@ -58,7 +59,12 @@ const Navbar = ({ toggleSidebar }) => {
     if(searchText.trim() !== ""){
       navigate(`/search/${searchText}`);
     }
+  };
+
+  const handleAddVideoForm = () => {
+    setIsAddVideoFormOpen(false);
   }
+
   return (
     <>
       <LoginModal
@@ -71,6 +77,7 @@ const Navbar = ({ toggleSidebar }) => {
         handleLogin={handleOpenLogin}
         handleClose={handleUserFormClose}
       />
+      <AddVideoModal isOpen={isAddVideoFormOpen} handleClose={handleAddVideoForm} userDetails={userDetails}/>
 
       <div className="flex items-center justify-between">
         <div className="flex items-center">
@@ -180,7 +187,7 @@ const Navbar = ({ toggleSidebar }) => {
         <div>
           {isSignedIn ? (
             <div className="flex items-center">
-              <div className="flex items-center text-textPrimary gap-1 bg-card px-2 py-1.5 m-2 rounded-full cursor-pointer hover:bg-hover">
+              <div onClick={()=>setIsAddVideoFormOpen(true)} className="flex items-center text-textPrimary gap-1 bg-card px-2 py-1.5 m-2 rounded-full cursor-pointer hover:bg-hover">
                 <>
                   <svg
                     viewBox="0 0 24 24"

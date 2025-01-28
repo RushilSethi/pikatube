@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useAddVideoByChannelIdMutation } from "../../store/apiSlice";
+import { useEditVideoByIdMutation } from "../../store/apiSlice";
 import useCustomToast from "../Helpers/useCustomToast";
-4;
 import toolTipIcon from "../../assets/questionMark-toolTip.svg";
 
-const AddVideoModal = ({ isOpen, handleClose, userDetails }) => {
+const EditVideoModal = ({ isOpen, handleClose, videoDetails, onEditSuccess }) => {
   const [videoUrl, setVideoUrl] = useState("");
   const [title, setTitle] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -13,20 +12,27 @@ const AddVideoModal = ({ isOpen, handleClose, userDetails }) => {
   const [tags, setTags] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [addVideoByChannelId, { isLoading }] = useAddVideoByChannelIdMutation();
+  const [editVideoById, { isLoading }] = useEditVideoByIdMutation();
 
   const { showToast } = useCustomToast();
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      if (videoDetails) {
+        setVideoUrl(videoDetails.videoUrl);
+        setTitle(videoDetails.title);
+        setThumbnailUrl(videoDetails.thumbnailUrl);
+        setDescription(videoDetails.description);
+        setTags(videoDetails.tags);
+      }
     } else {
       document.body.style.overflow = "auto";
     }
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isOpen]);
+  }, [isOpen, videoDetails]);
 
   const handleCancel = () => {
     setVideoUrl("");
@@ -47,17 +53,12 @@ const AddVideoModal = ({ isOpen, handleClose, userDetails }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (!userDetails.channelId || userDetails.channelId === "") {
-      showToast("error", "Please create a channel to post a video.");
-      return;
-    }
-  
+
     if (!videoUrl || !title || !thumbnailUrl || !description || !tags) {
       showToast("error", "All fields are required!");
       return;
     }
-  
+
     const videoData = {
       videoUrl,
       title,
@@ -65,16 +66,17 @@ const AddVideoModal = ({ isOpen, handleClose, userDetails }) => {
       description,
       tags,
     };
-  
+
     try {
-      await addVideoByChannelId({
-        channelId: userDetails.channelId,
+      await editVideoById({
+        id: videoDetails._id,
         body: videoData,
       });
-      showToast("success", "Video added successfully!");
+      showToast("success", "Video updated successfully!");
+      onEditSuccess();
       handleCancel();
     } catch (error) {
-      showToast("Error adding video. Please try again.", "error");
+      showToast("Error updating video. Please try again.", "error");
     }
   };
 
@@ -82,7 +84,7 @@ const AddVideoModal = ({ isOpen, handleClose, userDetails }) => {
     isOpen && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 text-textPrimary">
         <div className="bg-card p-6 rounded-lg shadow-lg w-96">
-          <h2 className="text-xl font-bold mb-4">Add Video</h2>
+          <h2 className="text-xl font-bold mb-4">Edit Video</h2>
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -171,7 +173,7 @@ const AddVideoModal = ({ isOpen, handleClose, userDetails }) => {
                 type="submit"
                 className="px-4 py-2 duration-200 border-accentBlue border-2 hover:bg-accentBlue text-textPrimary rounded"
               >
-                Add Video
+                Save Changes
               </button>
             </div>
           </form>
@@ -181,12 +183,17 @@ const AddVideoModal = ({ isOpen, handleClose, userDetails }) => {
   );
 };
 
-AddVideoModal.propTypes = {
+EditVideoModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  userDetails: PropTypes.shape({
-    channelId: PropTypes.string.isRequired,
+  videoDetails: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    videoUrl: PropTypes.string,
+    title: PropTypes.string,
+    thumbnailUrl: PropTypes.string,
+    description: PropTypes.string,
+    tags: PropTypes.array,
   }).isRequired,
 };
 
-export default AddVideoModal;
+export default EditVideoModal;
