@@ -25,13 +25,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     navigate("/");
   }
   function SubClick(){
-    navigate("/");
+    navigate("/subs");
   }
   function ShortsClick(){
-    navigate("/");
+    navigate("/shorts");
   }
   function UserClick(){
-    navigate("/");
+    navigate("/user");
   }
   function LogoutClick(){
     showToast("confirm", "Are you sure you want to log out?", (confirmed) => {

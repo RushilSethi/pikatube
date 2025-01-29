@@ -12,17 +12,23 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import CustomToastContainer from "./components/Helpers/CustomToastContainer";
 import ManageVideos from './components/ManageVideos.jsx'
+import ErrorPage from './components/ErrorPage.jsx'
+import SubscriptionsPage from './components/SubscriptionsPage.jsx'
+import NoShortsPage from './components/NoShortsPage.jsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    // errorElement: <ErrorElement />,
+    errorElement: <ErrorPage />,
     children: [
       {path: "/", element: <HomePage />},
+      {path: "/subs", element: <SubscriptionsPage />},
+      {path: "/shorts", element: <NoShortsPage />},
       {path: "/search/*", element: <SearchPage />},
       {path: "/video/:id", element: <VideoPage />},
       {path: "/channel/:id", element: <ChannelPage />},
+      {path: "/user", element: <UserPage />},
       {path: "/user/:id", element: <UserPage />},
       {path: "/user/:id/manage", element: <ManageVideos />}
     ]

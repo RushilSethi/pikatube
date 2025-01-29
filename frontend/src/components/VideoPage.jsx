@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ReactPlayer from "react-player";
 import AvatarShow from "./Helpers/AvatarShow";
 import { useParams, Link } from "react-router-dom";
@@ -10,6 +10,7 @@ import Loader from "./Helpers/Loader";
 import TruncateText from "./Helpers/TruncateText";
 import { useSelector } from "react-redux";
 import useCustomToast from "./Helpers/useCustomToast";
+import { formatDistanceToNow } from "date-fns";
 
 const VideoPage = () => {
   const subscribedList = {
@@ -66,19 +67,23 @@ const VideoPage = () => {
 
     if (comment.trim() === "") return;
 
-    // Log to check if we're hitting this part
     console.log("Posting comment:", comment);
 
     manageVideoInteraction({ id, body: { comment: { text: comment } } })
-      .unwrap() // Use unwrap to handle success/failure
+      .unwrap() 
       .then((response) => {
-        console.log("Comment posted successfully:", response);
+        setComment("");
       })
       .catch((error) => {
         console.error("Error posting comment:", error);
         showToast("error", "Failed to post comment.");
       });
   }
+
+  const timeAgo = formatDistanceToNow(new Date(videoDetails.uploadDate), {
+    addSuffix: true,
+  });
+
   return (
     <div className="flex flex-col items-center p-3 bg-background text-textPrimary min-h-screen w-full">
       <div className="w-full max-w-5xl aspect-video rounded-md overflow-hidden shadow-lg">
@@ -97,7 +102,7 @@ const VideoPage = () => {
         <div className="mb-2">
           <p className="text-sm text-textSecondary">
             <span>{videoDetails.views} views • </span>
-            <span>{videoDetails.uploadDate}</span>
+            <span>{timeAgo}</span>
           </p>
         </div>
 

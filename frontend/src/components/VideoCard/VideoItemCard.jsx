@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import AvatarShow from "../Helpers/AvatarShow";
 import { Link } from "react-router-dom";
+import { useIncreaseViewsMutation } from "../../store/apiSlice";
+import { formatDistanceToNow } from "date-fns";
 
 const VideoItemCard = ({
   id,
@@ -11,8 +13,29 @@ const VideoItemCard = ({
   views,
   uploadTime,
 }) => {
+
+  const [increaseViews] = useIncreaseViewsMutation();
+
+  const handleCardClick = async () => {
+    if (!id) {
+      console.error("Video ID is undefined, cannot increase views.");
+      return;
+    }
+
+    try {
+      console.log("Increasing views for video ID:", id);
+      await increaseViews({ id, body: { views: views + 1 } }).unwrap();
+    } catch (error) {
+      console.error("Failed to increment views:", error);
+    }
+  };
+
+  const timeAgo = formatDistanceToNow(new Date(uploadTime), {
+      addSuffix: true,
+    });
+
   return (
-    <Link to={`/video/${id}`}>
+    <Link to={`/video/${id}`} onClick={handleCardClick}>
       <div className="flex flex-col flex-grow text-textPrimary bg-background rounded-lg hover:scale-105 transition-transform duration-200 cursor-pointer">
         <img
           src={thumbnail}
@@ -30,7 +53,7 @@ const VideoItemCard = ({
 
             <p className="text-sm text-textSecondary">{channelName}</p>
             <p className="text-sm text-textSecondary">
-              {views} views • {uploadTime}
+              {views} views • {timeAgo}
             </p>
           </div>
         </div>
@@ -44,8 +67,8 @@ VideoItemCard.propTypes = {
   thumbnail: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   channelName: PropTypes.string.isRequired,
-  channelAvatar: PropTypes.string.isRequired,
-  views: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired,
+  views: PropTypes.number.isRequired,
   uploadTime: PropTypes.string.isRequired,
 };
 

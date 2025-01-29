@@ -127,10 +127,19 @@ export const apiSlice = createApi({
     }),
     searchVideosAndChannels: builder.query({
       query: (query) => `/search?query=${query}`,
+      providesTags: (result, error, id) => [{ type: 'Video', id }],
     }),
     manageVideoInteraction: builder.mutation({
       query: ({id, body}) => ({
         url: `/video/interact/${id}`,
+        method: "PUT",
+        body
+      }),
+      invalidatesTags: ({ id }) => [{ type: 'Video', id }],
+    }),
+    increaseViews: builder.mutation({
+      query: ({id, body}) => ({
+        url: `/video/views/${id}`,
         method: "PUT",
         body
       }),
@@ -157,5 +166,6 @@ export const {
   useDeleteChannelByIdMutation,
   useDeleteUserByIdMutation,
   useSearchVideosAndChannelsQuery,
-  useManageVideoInteractionMutation
+  useManageVideoInteractionMutation,
+  useIncreaseViewsMutation
 } = apiSlice;

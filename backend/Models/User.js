@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   avatar: {
-    type: String,
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
   },
   channelId: {
     type: mongoose.Schema.Types.ObjectId,

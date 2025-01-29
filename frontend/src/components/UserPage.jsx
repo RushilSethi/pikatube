@@ -25,11 +25,9 @@ const UserPage = () => {
   const deleteChannel = useDeleteChannel();
   const deleteUser = useDeleteUser();
 
-  const {
-    data: userDetails,
-    error,
-    isLoading,
-  } = useFetchUserDetailsByIdQuery(userId);
+  const { data: userDetails, error, isLoading } = useFetchUserDetailsByIdQuery(userId, {
+    skip: !isSignedIn,
+  });
 
   if (isLoading) {
     return <Loader />;

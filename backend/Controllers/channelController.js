@@ -1,5 +1,6 @@
 const Channel = require("../Models/Channel");
 const User = require("../Models/User");
+const Video = require("../Models/Video");
 
 exports.fetchChannelDetails = async (req, res) => {
   try {
@@ -103,10 +104,13 @@ exports.deleteChannel = async (req, res) => {
       });
     }
 
+    await Video.deleteMany({ channelId: id });
+
     await User.findByIdAndUpdate(req.user.id, { $unset: { channelId: "" } });
 
-    res.status(200).json({ message: "Channel deleted successfully" });
+    res.status(200).json({ message: "Channel and associated videos deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+

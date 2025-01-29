@@ -57,13 +57,15 @@ const AddVideoModal = ({ isOpen, handleClose, userDetails }) => {
       showToast("error", "All fields are required!");
       return;
     }
+
+    const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
   
     const videoData = {
       videoUrl,
       title,
       thumbnailUrl,
       description,
-      tags,
+      tags: tagsArray,
     };
   
     try {

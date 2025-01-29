@@ -59,12 +59,14 @@ const EditVideoModal = ({ isOpen, handleClose, videoDetails, onEditSuccess }) =>
       return;
     }
 
+    const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+
     const videoData = {
       videoUrl,
       title,
       thumbnailUrl,
       description,
-      tags,
+      tags: tagsArray,
     };
 
     try {
