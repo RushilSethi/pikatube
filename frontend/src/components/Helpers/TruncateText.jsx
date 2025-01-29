@@ -7,7 +7,7 @@ const TruncateText = ({ text, length }) => {
   const truncatedText = isExpanded ? text : text.substring(0, length) + (text.length > length ? '...' : '');
 
   return (
-    <div>
+    <>
       {truncatedText}
       {text.length > length && ( 
         <span 
@@ -17,7 +17,7 @@ const TruncateText = ({ text, length }) => {
           {isExpanded ? ' Read Less' : ` Read More`}
         </span>
       )}
-    </div>
+    </>
   );
 };
 

@@ -54,7 +54,7 @@ const UserPage = () => {
   };
 
   const manageVideos = () => {
-    const channelId = userDetails?.channelId
+    const channelId = userDetails?.channelId;
     navigate(`/user/${userId}/manage`, {
       state: { channelId: channelId },
     });
@@ -118,20 +118,26 @@ const UserPage = () => {
                     <li>
                       <button
                         className="w-full text-left px-4 py-2 hover:bg-hover"
-                        onClick={manageVideos}
+                        onClick={() => setEditUserForm(true)}
                       >
-                        🎥 Manage Videos
+                        ✏️ Edit User Details
                       </button>
                     </li>
                     <li>
-                      <button onClick={() => deleteChannel(userDetails?.channelId)} className="w-full text-left px-4 py-2 text-red-500 hover:bg-hover">
+                      <button
+                        onClick={() => deleteChannel(userDetails?.channelId)}
+                        className="w-full text-left px-4 py-2 text-red-500 hover:bg-hover"
+                      >
                         🗑️ Delete Channel
                       </button>
                     </li>
                   </>
                 )}
                 <li>
-                  <button onClick={() => deleteUser(userId)} className="w-full text-left px-4 py-2 text-red-500 hover:bg-hover">
+                  <button
+                    onClick={() => deleteUser(userId)}
+                    className="w-full text-left px-4 py-2 text-red-500 hover:bg-hover"
+                  >
                     ❌ Delete Account
                   </button>
                 </li>
@@ -154,20 +160,20 @@ const UserPage = () => {
               <p className="text-lg">Email: {userDetails?.email}</p>
 
               <div className="mt-6 flex flex-col gap-4">
-                <button
-                  onClick={() => setEditUserForm(true)}
-                  className="px-6 py-2 bg-textPrimary text-background font-medium rounded-md duration-200 hover:bg-hover hover:text-textPrimary transition"
-                >
-                  Edit User Details
-                </button>
-
                 {userDetails?.channelId ? (
                   <>
+                    <button
+                      onClick={manageVideos}
+                      className="px-6 py-2 bg-textPrimary text-background font-medium rounded-md duration-200 hover:bg-hover hover:text-textPrimary transition"
+                    >
+                      🎥 Manage Videos
+                    </button>
+
                     <button
                       onClick={() => setEditChannelForm(true)}
                       className="px-6 py-2 bg-textPrimary text-background font-medium rounded-md duration-200 hover:bg-hover hover:text-textPrimary transition"
                     >
-                      Edit Channel Details
+                       ✨ Edit Channel Details
                     </button>
                     <Link to={`/channel/${userDetails?.channelId}`}>
                       <div className="flex items-center gap-2 px-6 py-2 w-full text-textPrimary font-medium rounded-md duration-200 hover:bg-hover transition">

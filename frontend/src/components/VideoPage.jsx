@@ -4,19 +4,24 @@ import AvatarShow from "./Helpers/AvatarShow";
 import { useParams, Link } from "react-router-dom";
 import {
   useFetchVideoByIdQuery,
+  useManageVideoInteractionMutation,
 } from "../store/apiSlice";
 import Loader from "./Helpers/Loader";
 import TruncateText from "./Helpers/TruncateText";
 import { useSelector } from "react-redux";
+import useCustomToast from "./Helpers/useCustomToast";
 
 const VideoPage = () => {
   const subscribedList = {
     isSubscribed: true,
   };
 
+  const [manageVideoInteraction, { isLoading }] =
+    useManageVideoInteractionMutation();
   const [comment, setComment] = useState("");
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
   const { id } = useParams();
+  const { showToast } = useCustomToast();
 
   const {
     data: videoDetails,
@@ -34,18 +39,45 @@ const VideoPage = () => {
     );
   }
 
+  console.log(videoDetails);
+
   function handleSubscribe() {}
 
-  function handleLike() {}
+  function handleLike() {
+    if (!isSignedIn) {
+      return showToast("error", "Please sign in to like the video.");
+    }
+    manageVideoInteraction({ id, body: { like: true } });
+  }
 
-  function handleDislike() {}
+  function handleDislike() {
+    if (!isSignedIn) {
+      return showToast("error", "Please sign in to dislike the video.");
+    }
+    manageVideoInteraction({ id, body: { dislike: true } });
+  }
 
   function postComment(e) {
     e.preventDefault();
-    if(!isSignedIn){
-      return;
+
+    if (!isSignedIn) {
+      return showToast("error", "Please sign in to post a comment.");
     }
 
+    if (comment.trim() === "") return;
+
+    // Log to check if we're hitting this part
+    console.log("Posting comment:", comment);
+
+    manageVideoInteraction({ id, body: { comment: { text: comment } } })
+      .unwrap() // Use unwrap to handle success/failure
+      .then((response) => {
+        console.log("Comment posted successfully:", response);
+      })
+      .catch((error) => {
+        console.error("Error posting comment:", error);
+        showToast("error", "Failed to post comment.");
+      });
   }
   return (
     <div className="flex flex-col items-center p-3 bg-background text-textPrimary min-h-screen w-full">
@@ -72,12 +104,18 @@ const VideoPage = () => {
         <div className="w-full max-w-5xl mt-8 p-4 bg-card rounded-md shadow-md">
           <div className="flex items-center justify-between">
             <div className="flex flex-row items-center gap-3">
-              <Link to={`/channel/${videoDetails.channelId}`} className="cursor-pointer">
+              <Link
+                to={`/channel/${videoDetails.channelId}`}
+                className="cursor-pointer"
+              >
                 <div className="h-12 w-12">
                   <AvatarShow avatarUrl={videoDetails.avatar} />
                 </div>
               </Link>
-              <Link to={`/channel/${videoDetails.channelId}`} className="cursor-pointer">
+              <Link
+                to={`/channel/${videoDetails.channelId}`}
+                className="cursor-pointer"
+              >
                 <div>
                   <h3 className="text-xl font-bold">
                     {videoDetails.channelName}
@@ -126,18 +164,20 @@ const VideoPage = () => {
 
       <div className="w-full max-w-5xl mt-8">
         <h3 className="text-xl font-bold mb-4">Comments</h3>
-        <form className="mb-4 flex flex-col space-y-2">
+        <form className="mb-4 flex flex-col space-y-2" onSubmit={postComment}>
           <textarea
             placeholder="Write a comment..."
             className="p-2 border bg-card outline-none text-textPrimary border-border rounded-md w-full"
             rows="4"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
           />
           <button
             type="submit"
-            onClick={postComment}
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            className={`bg-card text-white py-2 px-4 rounded-md w-max self-start border-accentBlue border-2 duration-200 hover:bg-accentBlue ${isSignedIn ? "" : "grayscale"}`}
+            className={`bg-card text-white py-2 px-4 rounded-md w-max self-start border-accentBlue border-2 duration-200 hover:bg-accentBlue ${
+              isSignedIn ? "" : "grayscale"
+            }`}
+            disabled={!isSignedIn}
           >
             {isSignedIn ? "Post Comment" : "Sign in to Comment"}
           </button>
@@ -147,13 +187,13 @@ const VideoPage = () => {
             videoDetails.comments.map((comment, index) => (
               <div key={index} className="p-4 bg-card rounded-md flex flex-row">
                 <div className="h-12 w-12">
-                  <AvatarShow avatarUrl={comment?.avatarUrl} />
+                  <AvatarShow avatarUrl={comment?.userId.avatar} />
                 </div>
                 <div className="ml-4">
-                  <p className="font-bold">@{comment?.user}</p>
+                  <p className="font-bold">@{comment?.userId.username}</p>
                   <p>{comment?.text}</p>
                   <p className="text-sm text-textSecondary">
-                    {new Date(comment?.timestamp).toLocaleString()}
+                    {new Date(comment?.createdAt).toLocaleString()}
                   </p>
                 </div>
               </div>

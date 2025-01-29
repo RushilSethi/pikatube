@@ -1,16 +1,13 @@
-import thumbnail from "../../assets/test_object/thumbnail.avif";
-import channelAvatar from "../../assets/test_object/channel_profile.jpg";
+import { useNavigate } from "react-router-dom";
+import AvatarShow from "../Helpers/AvatarShow";
 
-const SearchItemCard = () => {
-  const title = "This portfolio got me hired in the gaming industry";
-  const channelName = "My GameDev Pal";
-  const views = "15k";
-  const uploadTime = "4 Months ago";
-  const description =
-    "In this video, I share how my game development portfolio helped me land a job in the gaming industry. Watch to learn tips, tools, and strategies.";
-
+const SearchItemCard = ({id, title, channelName, views, uploadTime, description, avatar, thumbnail}) => {
+  const navigate = useNavigate();
+  function handleClick(){
+    navigate(`/video/${id}`);
+  }
   return (
-    <div className="flex flex-col felx-shrink max-w-[80vw] md:flex-row gap-4 p-4 hover:bg-hover rounded-lg transition duration-200 cursor-pointer">
+    <div onClick={handleClick} className="flex flex-col felx-shrink max-w-[80vw] md:flex-row gap-4 p-4 hover:bg-hover rounded-lg transition duration-200 cursor-pointer">
       <img
         src={thumbnail}
         alt="Video Thumbnail"
@@ -23,11 +20,9 @@ const SearchItemCard = () => {
         </h3>
 
         <div className="flex items-center gap-2 my-1">
-          <img
-            src={channelAvatar}
-            alt={`${channelName} Avatar`}
-            className="w-8 h-8 rounded-full"
-          />
+          <div className="h-8 w-8">
+            <AvatarShow avatarUrl={avatar}/>
+          </div>
           <p className="text-sm text-textSecondary">{channelName}</p>
         </div>
 

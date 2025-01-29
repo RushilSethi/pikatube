@@ -9,7 +9,7 @@ export const apiSlice = createApi({
 
       headers.set("Content-Type", "application/json");
 
-      const endpointsRequiringAuth = ["updateUserDetails", "createChannel", "updateChannelInfo", "addVideoByChannelId", "deleteVideoById", "editVideoById", "deleteChannelById", "deleteUserById"];
+      const endpointsRequiringAuth = ["updateUserDetails", "createChannel", "updateChannelInfo", "addVideoByChannelId", "deleteVideoById", "editVideoById", "deleteChannelById", "deleteUserById", "manageVideoInteraction"];
       if (token && endpointsRequiringAuth.includes(endpoint)) {
         headers.set("Authorization", `JWT ${token}`);
       }
@@ -25,6 +25,7 @@ export const apiSlice = createApi({
     }),
     fetchVideoById: builder.query({
       query: (id) => `/video/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Video', id }],
     }),
     fetchChannelById: builder.query({
       query: (id) => `/channel/${id}`,
@@ -127,6 +128,14 @@ export const apiSlice = createApi({
     searchVideosAndChannels: builder.query({
       query: (query) => `/search?query=${query}`,
     }),
+    manageVideoInteraction: builder.mutation({
+      query: ({id, body}) => ({
+        url: `/video/interact/${id}`,
+        method: "PUT",
+        body
+      }),
+      invalidatesTags: ({ id }) => [{ type: 'Video', id }],
+    })
   }),
 });
 
@@ -147,5 +156,6 @@ export const {
   useGetMultipleVideosByIdsMutation,
   useDeleteChannelByIdMutation,
   useDeleteUserByIdMutation,
-  useSearchVideosAndChannelsQuery
+  useSearchVideosAndChannelsQuery,
+  useManageVideoInteractionMutation
 } = apiSlice;

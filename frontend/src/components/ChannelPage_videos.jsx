@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const ChannelPage_videos = ({ videos, avatar }) => {
   if (!videos || videos.length === 0) {
-    return <p>No videos available.</p>;
+    return <p className="text-textPrimary">No videos available.</p>;
   }
   return (
     <>

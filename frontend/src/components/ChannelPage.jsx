@@ -48,7 +48,7 @@ const ChannelPage = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-screen">
       <div className="w-full flex flex-row px-32 items-start">
         <div className="text-textPrimary flex items-center">
           <div className="w-48 h-48">
