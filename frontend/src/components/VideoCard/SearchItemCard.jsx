@@ -38,6 +38,7 @@ const SearchItemCard = ({
         <img
           src={thumbnail}
           alt="Video Thumbnail"
+          loading="lazy"
           className="w-full md:w-60 h-36 object-cover rounded-lg"
         />
 

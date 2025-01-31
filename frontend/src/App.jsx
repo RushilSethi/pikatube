@@ -42,7 +42,7 @@ function App() {
     } else {
       dispatch(signOut());
     }
-  }, [dispatch, validateToken]);
+  }, [dispatch, validateToken, isSignedIn]);
 
   return (
     <div className="bg-background w-full min-w-screen min-h-screen">

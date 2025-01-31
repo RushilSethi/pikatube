@@ -40,6 +40,7 @@ const VideoItemCard = ({
         <img
           src={thumbnail}
           alt="Video Thumbnail"
+          loading="lazy"
           className="w-full object-cover rounded-t-lg"
         />
 
@@ -67,7 +68,7 @@ VideoItemCard.propTypes = {
   thumbnail: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   channelName: PropTypes.string.isRequired,
-  avatar: PropTypes.string.isRequired,
+  avatar: PropTypes.string,
   views: PropTypes.number.isRequired,
   uploadTime: PropTypes.string.isRequired,
 };

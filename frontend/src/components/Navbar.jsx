@@ -19,6 +19,11 @@ const Navbar = ({ toggleSidebar }) => {
 
   const [isAddVideoFormOpen, setIsAddVideoFormOpen] = useState(false);
   const [isUserFormOpen, setIsUserFormOpen] = useState("");
+
+  useEffect(() => {
+    console.log("Redux state updated:", { isSignedIn, userId });
+  }, [isSignedIn, userId]);
+  
   const handleOpenLogin = () => {
     setIsUserFormOpen("login");
   };
@@ -32,12 +37,23 @@ const Navbar = ({ toggleSidebar }) => {
     data: userDetails,
     error,
     isLoading,
+    refetch 
   } = useFetchUserDetailsByIdQuery(userId, {
     skip: !isSignedIn || !userId,
   });
 
   useEffect(() => {
+    if (isSignedIn && userId) {
+      refetch();
+    }
+  }, [userId, isSignedIn, refetch]);
+
+  useEffect(() => {
+    console.log("1st console")
+    console.log(userDetails)
     if (userDetails) {
+      console.log("2nd console")
+      console.log(userDetails)
       setAvatarUrl(userDetails.avatar);
     }
   }, [userDetails]);

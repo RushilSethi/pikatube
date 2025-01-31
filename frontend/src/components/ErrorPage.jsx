@@ -12,7 +12,7 @@ const ErrorPage = () => {
           ? "The page you’re looking for doesn’t exist."
           : "Something went wrong."}
       </p>
-      <img src={notFound} alt="Not Found" className="h-40 w-40 mb-4" />
+      <img src={notFound} alt="Not Found" loading="lazy" className="h-40 w-40 mb-4" />
       
       {error?.statusText && (
         <p className="text-md text-border italic mb-2">{error.statusText}</p>

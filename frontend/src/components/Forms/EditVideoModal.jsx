@@ -191,7 +191,7 @@ EditVideoModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   videoDetails: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
+    _id: PropTypes.string,
     videoUrl: PropTypes.string,
     title: PropTypes.string,
     thumbnailUrl: PropTypes.string,

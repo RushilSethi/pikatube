@@ -110,6 +110,7 @@ const ChannelPage = () => {
         <ChannelPage_videos
           videos={channelDetails.videos}
           avatar={userDetails?.avatar}
+          channelName={channelDetails.channelName}
         />
       </div>
     </div>
