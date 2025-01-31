@@ -14,7 +14,7 @@ function App() {
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
-  const {showToast} = useCustomToast;
+  const {showToast} = useCustomToast();
   
   const dispatch = useDispatch();
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
@@ -42,13 +42,13 @@ function App() {
     } else {
       dispatch(signOut());
     }
-  }, [dispatch, validateToken, isSignedIn, showToast]);
+  }, [dispatch, validateToken]);
 
   return (
-    <div className="bg-background">
+    <div className="bg-background w-full min-w-screen min-h-screen">
       <Navbar toggleSidebar={toggleSidebar} />
       <div className="flex">
-        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar}/>
         <Outlet />
       </div>
       {/* <Footer /> */}

@@ -188,7 +188,8 @@ AddVideoModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   userDetails: PropTypes.shape({
     channelId: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
 };
+
 
 export default AddVideoModal;

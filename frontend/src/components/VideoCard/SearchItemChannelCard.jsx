@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import AvatarShow from "../Helpers/AvatarShow";
+import PropTypes from "prop-types";
 
 const SearchItemChannelCard = ({id, channelName, avatar, description}) => {
   const navigate = useNavigate();
@@ -23,6 +24,13 @@ const SearchItemChannelCard = ({id, channelName, avatar, description}) => {
       </div>
     </div>
   );
+};
+
+SearchItemChannelCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  channelName: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired,
 };
 
 export default SearchItemChannelCard;

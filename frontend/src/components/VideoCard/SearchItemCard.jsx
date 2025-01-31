@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import AvatarShow from "../Helpers/AvatarShow";
 import { useIncreaseViewsMutation } from "../../store/apiSlice";
 import { formatDistanceToNow } from "date-fns";
+import PropTypes from "prop-types";
 
 const SearchItemCard = ({
   id,
@@ -63,6 +64,17 @@ const SearchItemCard = ({
       </div>
     </Link>
   );
+};
+
+SearchItemCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  thumbnail: PropTypes.string.isRequired,
+  channelName: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  views: PropTypes.number.isRequired,
+  uploadTime: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired,
 };
 
 export default SearchItemCard;

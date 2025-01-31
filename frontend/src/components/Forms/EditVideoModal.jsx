@@ -59,7 +59,9 @@ const EditVideoModal = ({ isOpen, handleClose, videoDetails, onEditSuccess }) =>
       return;
     }
 
-    const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+    const tagsString = Array.isArray(tags) ? tags.join(",") : tags;
+
+    const tagsArray = tagsString.split(',').map(tag => tag.trim()).filter(tag => tag);
 
     const videoData = {
       videoUrl,
@@ -196,6 +198,7 @@ EditVideoModal.propTypes = {
     description: PropTypes.string,
     tags: PropTypes.array,
   }).isRequired,
+  onEditSuccess: PropTypes.func.isRequired
 };
 
 export default EditVideoModal;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useGetMultipleVideosByIdsMutation } from "../store/apiSlice";
 import Loader from "./Helpers/Loader";
@@ -34,7 +34,7 @@ const ManageVideos_videos = ({ videoIds, handleDelete, handleEditButton, refetch
     );
   }
   return (
-    <div className="grid gap-4 grid-cols-1 w-[75vw] mx-auto px-4">
+    <div className="grid gap-4 grid-cols-1 w-full mx-auto px-4">
       {videos.map((video, index) => {
         return (
           <ManageVideos_videoItem
@@ -56,10 +56,11 @@ const ManageVideos_videos = ({ videoIds, handleDelete, handleEditButton, refetch
   );
 };
 
-// Define prop types for validation
 ManageVideos_videos.propTypes = {
-  videoIds: PropTypes.arrayOf(PropTypes.string).isRequired, // Expecting an array of strings (video IDs)
-  handleDelete: PropTypes.func.isRequired, // Expecting a function for handling delete
+  videoIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleEditButton: PropTypes.func.isRequired,
+  refetchFlag: PropTypes.bool.isRequired
 };
 
 export default ManageVideos_videos;

@@ -1,15 +1,23 @@
 import { useState, useEffect } from "react";
 import useCustomToast from "../Helpers/useCustomToast";
-import { useFetchChannelByIdQuery, useUpdateChannelInfoMutation } from "../../store/apiSlice";
+import {
+  useFetchChannelByIdQuery,
+  useUpdateChannelInfoMutation,
+} from "../../store/apiSlice";
+import PropTypes from "prop-types";
 
 const EditChannelModal = ({ isOpen, handleClose, userDetails }) => {
   const [channelName, setChannelName] = useState("");
   const [description, setDescription] = useState("");
 
   const channelId = userDetails.channelId;
-  const {data: channel, error, isChannelLoading} = useFetchChannelByIdQuery(channelId);
+  const {
+    data: channel,
+    error,
+    isChannelLoading,
+  } = useFetchChannelByIdQuery(channelId);
 
-  const [updateChannelInfo, {isLoading}] = useUpdateChannelInfoMutation();
+  const [updateChannelInfo, { isLoading }] = useUpdateChannelInfoMutation();
   const { showToast } = useCustomToast();
 
   useEffect(() => {
@@ -34,12 +42,19 @@ const EditChannelModal = ({ isOpen, handleClose, userDetails }) => {
     }
 
     try {
-      const response = await updateChannelInfo({ id: channelId, body: {channelName: channelName, description} }).unwrap();
-        console.log(response);
+      const response = await updateChannelInfo({
+        id: channelId,
+        body: { channelName: channelName, description },
+      }).unwrap();
+      console.log(response);
       showToast("success", `Channel updated successfully.`);
       handleCancel();
     } catch (error) {
-      showToast("error", error?.data?.message || "Failed to update the channel. Please try again.");
+      showToast(
+        "error",
+        error?.data?.message ||
+          "Failed to update the channel. Please try again."
+      );
     }
   };
 
@@ -50,7 +65,10 @@ const EditChannelModal = ({ isOpen, handleClose, userDetails }) => {
           <h2 className="text-xl font-bold mb-4">Edit Channel</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-2" htmlFor="channelName">
+              <label
+                className="block text-sm font-medium mb-2"
+                htmlFor="channelName"
+              >
                 Channel Name
               </label>
               <input
@@ -63,7 +81,10 @@ const EditChannelModal = ({ isOpen, handleClose, userDetails }) => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-2" htmlFor="description">
+              <label
+                className="block text-sm font-medium mb-2"
+                htmlFor="description"
+              >
                 Description
               </label>
               <textarea
@@ -98,6 +119,12 @@ const EditChannelModal = ({ isOpen, handleClose, userDetails }) => {
       </div>
     )
   );
+};
+
+EditChannelModal.Proptypes = {
+  userDetails: PropTypes.object.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default EditChannelModal;

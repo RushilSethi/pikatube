@@ -25,7 +25,11 @@ const UserPage = () => {
   const deleteChannel = useDeleteChannel();
   const deleteUser = useDeleteUser();
 
-  const { data: userDetails, error, isLoading } = useFetchUserDetailsByIdQuery(userId, {
+  const {
+    data: userDetails,
+    error,
+    isLoading,
+  } = useFetchUserDetailsByIdQuery(userId, {
     skip: !isSignedIn,
   });
 
@@ -111,16 +115,16 @@ const UserPage = () => {
           {settingsDropdown && (
             <div className="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg">
               <ul className="py-2 text-sm text-textPrimary">
+                <li>
+                  <button
+                    className="w-full text-left px-4 py-2 hover:bg-hover"
+                    onClick={() => setEditUserForm(true)}
+                  >
+                    ✏️ Edit User Details
+                  </button>
+                </li>
                 {userDetails?.channelId && (
                   <>
-                    <li>
-                      <button
-                        className="w-full text-left px-4 py-2 hover:bg-hover"
-                        onClick={() => setEditUserForm(true)}
-                      >
-                        ✏️ Edit User Details
-                      </button>
-                    </li>
                     <li>
                       <button
                         onClick={() => deleteChannel(userDetails?.channelId)}
@@ -171,7 +175,7 @@ const UserPage = () => {
                       onClick={() => setEditChannelForm(true)}
                       className="px-6 py-2 bg-textPrimary text-background font-medium rounded-md duration-200 hover:bg-hover hover:text-textPrimary transition"
                     >
-                       ✨ Edit Channel Details
+                      ✨ Edit Channel Details
                     </button>
                     <Link to={`/channel/${userDetails?.channelId}`}>
                       <div className="flex items-center gap-2 px-6 py-2 w-full text-textPrimary font-medium rounded-md duration-200 hover:bg-hover transition">

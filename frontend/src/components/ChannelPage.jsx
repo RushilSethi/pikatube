@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
 import AvatarShow from "./Helpers/AvatarShow";
-import VideoItemCard from "./VideoCard/VideoItemCard";
-import { useFetchChannelByIdQuery, useFetchUserDetailsByIdQuery } from "../store/apiSlice";
+import {
+  useFetchChannelByIdQuery,
+  useFetchUserDetailsByIdQuery,
+} from "../store/apiSlice";
 import Loader from "./Helpers/Loader";
 import ChannelPage_videos from "./ChannelPage_videos";
 import TruncateText from "./Helpers/TruncateText";
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from "react";
 
 const ChannelPage = () => {
   const { id } = useParams();
@@ -18,6 +20,7 @@ const ChannelPage = () => {
 
   const [userId, setUserId] = useState(null);
   const [shouldFetchUser, setShouldFetchUser] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const {
     data: userDetails,
@@ -37,32 +40,42 @@ const ChannelPage = () => {
   if (channelLoading || userLoading) return <Loader />;
 
   if (channelError) {
-    return <p className="text-center text-red-500">Error loading channel details. Please try again later.</p>;
+    return (
+      <p className="text-center text-red-500">
+        Error loading channel details. Please try again later.
+      </p>
+    );
   }
   if (userError) {
-    return <p className="text-center text-red-500">Error loading user details. Please try again later.</p>;
+    return (
+      <p className="text-center text-red-500">
+        Error loading user details. Please try again later.
+      </p>
+    );
   }
 
   const handleSubscribe = () => {
-    console.log("Subscription toggled!");
+    setIsSubscribed(!isSubscribed);
   };
 
   return (
-    <div className="flex flex-col w-screen">
-      <div className="w-full flex flex-row px-32 items-start">
+    <div className="flex flex-col  w-full min-w-0 overflow-hidden">
+      <div className="flex flex-col w-full px-4 sm:px-8 md:px-16 lg:px-32">
         <div className="text-textPrimary flex items-center">
-          <div className="w-48 h-48">
+          <div className="w-36 md:w-48 md:h-48 flex items-center">
             <AvatarShow avatarUrl={userDetails?.avatar} />
           </div>
           <div>
-            <div className="text-3xl font-bold">
+            <div className="text-lg md:text-lg lg:text-3xl font-bold">
               {channelDetails.channelName}
             </div>
-            <div className="text-textSecondary">@{userDetails?.username || ""}</div>
             <div className="text-textSecondary">
+              @{userDetails?.username || ""}
+            </div>
+            <div className="text-textSecondary text-sm md:text-md">
               {channelDetails.videos.length} video(s)
             </div>
-            <div className="text-textSecondary">
+            <div className="text-textSecondary hidden md:flex">
               <TruncateText
                 text={channelDetails.description}
                 length={50}
@@ -73,21 +86,31 @@ const ChannelPage = () => {
           <div className="ml-16">
             <button
               onClick={handleSubscribe}
-              className={`px-4 py-2 rounded-md ${
-                channelDetails.isSubscribed
+              className={`px-4 py-2 rounded-full ${
+                isSubscribed
                   ? "bg-textPrimary text-background"
-                  : "bg-background text-textPrimary hover:bg-hover"
+                  : "bg-card text-textPrimary hover:bg-hover"
               }`}
             >
-              {channelDetails.isSubscribed ? "Subscribed" : "Subscribe"}
+              {isSubscribed ? "Subscribed" : "Subscribe"}
             </button>
           </div>
         </div>
       </div>
+      <div className="text-textSecondary md:hidden flex mx-2 ">
+        <TruncateText
+          text={channelDetails.description}
+          length={50}
+          showReadMore={true}
+        />
+      </div>
       <hr className="border-t-2 border-border my-4" />
 
       <div className="p-8">
-        <ChannelPage_videos videos={channelDetails.videos} avatar={userDetails?.avatar}/>
+        <ChannelPage_videos
+          videos={channelDetails.videos}
+          avatar={userDetails?.avatar}
+        />
       </div>
     </div>
   );

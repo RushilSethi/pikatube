@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useCreateChannelMutation } from "../../store/apiSlice";
 import useCustomToast from "../Helpers/useCustomToast";
+import PropTypes from "prop-types";
 
 const CreateChannelModal = ({ isOpen, handleClose }) => {
   const [channelName, setChannelName] = useState("");
@@ -89,5 +90,10 @@ const CreateChannelModal = ({ isOpen, handleClose }) => {
     )
   );
 };
+
+CreateChannelModal.proptypes = {
+  isOpen: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired
+} 
 
 export default CreateChannelModal;

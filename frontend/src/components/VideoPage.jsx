@@ -13,16 +13,13 @@ import useCustomToast from "./Helpers/useCustomToast";
 import { formatDistanceToNow } from "date-fns";
 
 const VideoPage = () => {
-  const subscribedList = {
-    isSubscribed: true,
-  };
-
   const [manageVideoInteraction, { isLoading }] =
     useManageVideoInteractionMutation();
   const [comment, setComment] = useState("");
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
   const { id } = useParams();
   const { showToast } = useCustomToast();
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const {
     data: videoDetails,
@@ -42,7 +39,10 @@ const VideoPage = () => {
 
   console.log(videoDetails);
 
-  function handleSubscribe() {}
+
+  function handleSubscribe() {
+    setIsSubscribed(!isSubscribed);
+  }
 
   function handleLike() {
     if (!isSignedIn) {
@@ -70,7 +70,7 @@ const VideoPage = () => {
     console.log("Posting comment:", comment);
 
     manageVideoInteraction({ id, body: { comment: { text: comment } } })
-      .unwrap() 
+      .unwrap()
       .then((response) => {
         setComment("");
       })
@@ -107,7 +107,7 @@ const VideoPage = () => {
         </div>
 
         <div className="w-full max-w-5xl mt-8 p-4 bg-card rounded-md shadow-md">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-col md:flex-row">
             <div className="flex flex-row items-center gap-3">
               <Link
                 to={`/channel/${videoDetails.channelId}`}
@@ -129,17 +129,17 @@ const VideoPage = () => {
               </Link>
               <button
                 onClick={handleSubscribe}
-                className={`px-4 py-2 rounded-md ${
-                  subscribedList?.isSubscribed
+                className={`px-4 py-2 rounded-full ${
+                  isSubscribed
                     ? "bg-textPrimary text-background"
                     : "bg-background text-textPrimary hover:bg-hover"
                 }`}
               >
-                {subscribedList?.isSubscribed ? "Subscribed" : "Subscribe"}
+                {isSubscribed ? "Subscribed" : "Subscribe"}
               </button>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 mt-2 md:mt-0">
               <button
                 onClick={handleLike}
                 className="px-4 py-2 bg-accentBlue text-textPrimary rounded-md hover:bg-blue-600"
@@ -164,6 +164,18 @@ const VideoPage = () => {
               showReadMore={true}
             />
           </p>
+
+          {/* Tags Section */}
+          <div className="mt-4 flex flex-wrap gap-2">
+            {videoDetails.tags.map((tag, index) => (
+              <span
+                key={index}
+                className="px-3 py-1 bg-blue-600 text-blue-200 rounded-full text-sm cursor-pointer hover:bg-blue-700"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -182,7 +194,6 @@ const VideoPage = () => {
             className={`bg-card text-white py-2 px-4 rounded-md w-max self-start border-accentBlue border-2 duration-200 hover:bg-accentBlue ${
               isSignedIn ? "" : "grayscale"
             }`}
-            disabled={!isSignedIn}
           >
             {isSignedIn ? "Post Comment" : "Sign in to Comment"}
           </button>

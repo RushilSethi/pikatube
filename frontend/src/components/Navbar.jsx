@@ -3,7 +3,7 @@ import PikachuLogo from "../assets/pikachu-logo.svg";
 import { useState, useRef, useEffect } from "react";
 import LoginModal from "./Forms/LoginModal";
 import RegisterModal from "./Forms/RegisterModal";
-import AddVideoModal from "./Forms/AddVideoModal"
+import AddVideoModal from "./Forms/AddVideoModal";
 import pikachu from "../assets/pikachu.mp3";
 import { useSelector } from "react-redux";
 import AvatarShow from "./Helpers/AvatarShow";
@@ -56,14 +56,14 @@ const Navbar = ({ toggleSidebar }) => {
   };
 
   const handleSearch = () => {
-    if(searchText.trim() !== ""){
+    if (searchText.trim() !== "") {
       navigate(`/search/${searchText}`);
     }
   };
 
   const handleAddVideoForm = () => {
     setIsAddVideoFormOpen(false);
-  }
+  };
 
   return (
     <>
@@ -77,12 +77,16 @@ const Navbar = ({ toggleSidebar }) => {
         handleLogin={handleOpenLogin}
         handleClose={handleUserFormClose}
       />
-      <AddVideoModal isOpen={isAddVideoFormOpen} handleClose={handleAddVideoForm} userDetails={userDetails}/>
+      <AddVideoModal
+        isOpen={isAddVideoFormOpen}
+        handleClose={handleAddVideoForm}
+        userDetails={userDetails}
+      />
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
+      <div className="flex items-center justify-between px-4">
+        <div className="flex items-center  min-w-[120px] sm:min-w-[160px]">
           <div
-            className="rounded-full hover:bg-hover p-2 m-2 cursor-pointer"
+            className="rounded-full hover:bg-hover px-2 py-2 mr-2 cursor-pointer"
             onClick={toggleSidebar}
           >
             {/* Menu Icon */}
@@ -132,25 +136,28 @@ const Navbar = ({ toggleSidebar }) => {
           >
             <audio ref={audioRef} src={pikachu} />
             <img src={PikachuLogo} className="w-8 h-8" />
-            <span className="text-background font-bold text-lg">PikaTube</span>
+            <span className="text-background font-bold lg:text-lg text-sm md:text-md">PikaTube</span>
           </div>
         </div>
 
         {/* search bar */}
-        <div className="flex items-center">
+        <div className="items-center hidden sm:flex">
           <input
-            className="searchbar w-96 bg-card border-border border-2 text-textPrimary px-3 py-1.5 rounded-full focus:outline-none focus:border-accentBlue"
+            className="searchbar w-full sm:w-64 md:w-80 lg:w-96 bg-card border-border border-2 text-textPrimary px-3 py-1.5 rounded-full focus:outline-none focus:border-accentBlue"
             placeholder="Search"
-            onChange={(e)=>setSearchText(e.target.value)}
-            value = {searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            value={searchText}
           />
           <style>{`
-        .searchbar::placeholder {
-          color: #aaaaaa; 
-        }
-      `}</style>
+            .searchbar::placeholder {
+              color: #aaaaaa; 
+            }
+          `}</style>
           {/* search icon */}
-          <div className="rounded-full bg-hover p-2 m-2 cursor-pointer" onClick={handleSearch}>
+          <div
+            className="rounded-full bg-hover p-2 m-2 cursor-pointer"
+            onClick={handleSearch}
+          >
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -186,8 +193,11 @@ const Navbar = ({ toggleSidebar }) => {
         {/* sign in / add video and account */}
         <div>
           {isSignedIn ? (
-            <div className="flex items-center">
-              <div onClick={()=>setIsAddVideoFormOpen(true)} className="flex items-center text-textPrimary gap-1 bg-card px-2 py-1.5 m-2 rounded-full cursor-pointer hover:bg-hover">
+            <div className="flex items-center gap-2">
+              <div
+                onClick={() => setIsAddVideoFormOpen(true)}
+                className="flex items-center text-textPrimary gap-1 bg-card px-2 py-1.5 m-2 rounded-full cursor-pointer hover:bg-hover sm:text-base"
+              >
                 <>
                   <svg
                     viewBox="0 0 24 24"
@@ -217,7 +227,7 @@ const Navbar = ({ toggleSidebar }) => {
                 Create
               </div>
               <div
-                className="w-11 h-11 mx-4 cursor-pointer"
+                className="w-11 h-11 mx-1 mt-1 cursor-pointer"
                 onClick={handleAvatarClick}
               >
                 <AvatarShow avatarUrl={avatarUrl} />
@@ -253,6 +263,56 @@ const Navbar = ({ toggleSidebar }) => {
               Sign In
             </div>
           )}
+        </div>
+      </div>
+
+      {/* searchbar and icon for smaller devices */}
+      <div className="items-center flex sm:hidden px-4">
+        <input
+          className="searchbar w-full sm:w-64 md:w-80 lg:w-96 bg-card border-border border-2 text-textPrimary px-3 py-1.5 rounded-full focus:outline-none focus:border-accentBlue"
+          placeholder="Search"
+          onChange={(e) => setSearchText(e.target.value)}
+          value={searchText}
+        />
+        <style>{`
+            .searchbar::placeholder {
+              color: #aaaaaa; 
+            }
+          `}</style>
+        {/* search icon */}
+        <div
+          className="rounded-full bg-hover p-2 m-2 cursor-pointer"
+          onClick={handleSearch}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="#aaaaaa"
+            className="w-6 h-6"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth={0} />
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <path
+                d="M17 17L21 21"
+                stroke="#aaaaaa"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />{" "}
+              <path
+                d="M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                stroke="#aaaaaa"
+                strokeWidth={2}
+              />{" "}
+            </g>
+          </svg>
         </div>
       </div>
     </>

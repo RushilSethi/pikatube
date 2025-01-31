@@ -187,6 +187,7 @@ const EditUserDetailsModal = ({ isOpen, handleClose, userId, userDetails }) => {
 EditUserDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
   userDetails: PropTypes.shape({
     username: PropTypes.string.isRequired,
   })

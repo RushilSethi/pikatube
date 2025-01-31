@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Video = require("../Models/Video");
 const Channel = require("../Models/Channel");
 const User = require("../Models/User");
@@ -210,10 +211,6 @@ exports.interactWithVideo = async (req, res) => {
       return res.status(404).json({ message: "Video not found" });
     }
 
-    if (views !== undefined) {
-      video.views = views;
-    }
-
     const likedIndex = video.likedBy.indexOf(userId);
     const dislikedIndex = video.dislikedBy.indexOf(userId);
 
@@ -255,7 +252,6 @@ exports.interactWithVideo = async (req, res) => {
   }
 };
 
-const mongoose = require("mongoose");
 exports.increaseViews = async (req, res) => {
   const { id } = req.params;
   const { views } = req.body;

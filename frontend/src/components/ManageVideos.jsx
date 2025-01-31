@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   useFetchChannelByIdQuery,
   useDeleteVideoByIdMutation,
-  useEditVideoByIdMutation,
 } from "../store/apiSlice";
 import useCustomToast from "./Helpers/useCustomToast";
 import ManageVideos_videos from "./ManageVideos_Videos";
@@ -56,7 +55,7 @@ const ManageVideos = () => {
   if (error) return <p>Error loading channel details. Please try again later.</p>;
 
   return (
-    <div className="p-4">
+    <div className="p-4 w-full min-w-0 overflow-hidden">
       <EditVideoModal onEditSuccess={handleEditSuccess} isOpen={isEditVideoModalOpen} handleClose={handleEditVideoModalClose} videoDetails={videoToBeEdited}/>
       <h2 className="text-2xl font-bold mb-4 text-textPrimary">Manage Videos</h2>
       <ManageVideos_videos videoIds={videoIds} refetchFlag={refetchFlag} handleDelete={handleDelete} handleEditButton={handleEditVideoModalOpen}/>

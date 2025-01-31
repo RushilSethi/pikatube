@@ -5,7 +5,7 @@ const NoShortsPage = () => {
     <div className="flex flex-col items-center justify-center w-screen h-screen bg-background text-textPrimary text-center p-6">
       <h1 className="text-4xl font-bold mb-4 text-accentRed">No Doomscrolling Here</h1>
       <p className="text-lg text-textSecondary max-w-md">
-        Save your attention span. We don’t do infinite scrolling here. Watch content that matters. 🚀
+        Save your attention span. We don’t do infinite scrolling here. Watch content that matters to you. 🚀
       </p>
       <Link
         to="/"
