@@ -57,7 +57,7 @@ const SearchItemCard = ({
             {views} views • {timeAgo}
           </p>
 
-          <p className="text-sm text-textSecondary mt-2 line-clamp-3">
+          <p className="text-sm hidden md:flex text-textSecondary mt-2 line-clamp-3">
             {description}
           </p>
         </div>

@@ -142,13 +142,13 @@ const VideoPage = () => {
             <div className="flex items-center gap-4 mt-2 md:mt-0">
               <button
                 onClick={handleLike}
-                className="px-4 py-2 bg-accentBlue text-textPrimary rounded-md hover:bg-blue-600"
+                className="px-4 py-2 bg-accentBlue text-textPrimary rounded-full hover:bg-blue-600"
               >
                 👍 Like ({videoDetails.likes})
               </button>
               <button
                 onClick={handleDislike}
-                className="px-4 py-2 bg-accentRed text-textPrimary rounded-md hover:bg-red-600"
+                className="px-4 py-2 bg-accentRed text-textPrimary rounded-full hover:bg-red-600"
               >
                 👎 Dislike ({videoDetails.dislikes})
               </button>

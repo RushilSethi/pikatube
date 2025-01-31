@@ -2,15 +2,18 @@ import { useNavigate } from "react-router-dom";
 import AvatarShow from "../Helpers/AvatarShow";
 import PropTypes from "prop-types";
 
-const SearchItemChannelCard = ({id, channelName, avatar, description}) => {
+const SearchItemChannelCard = ({ id, channelName, avatar, description }) => {
   const navigate = useNavigate();
-  function handleClick(){
-    navigate(`/channel/${id}`)
+  function handleClick() {
+    navigate(`/channel/${id}`);
   }
   return (
-    <div onClick={handleClick} className="flex flex-col max-w-[80vw] md:flex-row gap-4 p-4 hover:bg-hover rounded-lg transition duration-200 cursor-pointer">
-      <div className="w-20 h-20">
-      <AvatarShow avatarUrl={avatar}/>
+    <div
+      onClick={handleClick}
+      className="flex max-w-[80vw] flex-row gap-4 p-4 hover:bg-hover rounded-lg transition duration-200 cursor-pointer"
+    >
+      <div className="w-20 h-20 flex items-center">
+        <AvatarShow avatarUrl={avatar} />
       </div>
 
       <div className="flex flex-col flex-1">

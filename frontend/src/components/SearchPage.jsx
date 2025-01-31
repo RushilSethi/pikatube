@@ -30,7 +30,7 @@ const SearchPage = () => {
 
   return (
     <div className="p-4 w-screen">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col md:flex-row justify-between items-start sm:items-center mb-4 gap-2">
         <h2 className="text-xl font-bold text-textPrimary">
           Search Results for: &quot;{searchQuery}&quot;
         </h2>
