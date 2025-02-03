@@ -11,6 +11,7 @@ import EditChannelModal from "./Forms/EditChannelModal";
 import { Link, useNavigate } from "react-router-dom";
 import useDeleteChannel from "./Helpers/useDeleteChannel";
 import useDeleteUser from "./Helpers/useDeleteUser";
+import useCustomToast from "./Helpers/useCustomToast";
 
 const UserPage = () => {
   const [isUserFormOpen, setIsUserFormOpen] = useState("");
@@ -24,6 +25,7 @@ const UserPage = () => {
   const userId = useSelector((state) => state.user.userId);
   const deleteChannel = useDeleteChannel();
   const deleteUser = useDeleteUser();
+  const { showToast } = useCustomToast();
 
   const {
     data: userDetails,
@@ -56,10 +58,18 @@ const UserPage = () => {
   };
 
   const manageVideos = () => {
-    const channelId = userDetails?.channelId;
-    navigate(`/user/${userId}/manage`, {
-      state: { channelId: channelId },
-    });
+    if (!userDetails?.channelId) {
+      showToast(
+        "error",
+        "Couldn't retrieve channel details. Please check your connection and try again."
+      );
+      return;
+    } else {
+      const channelId = userDetails?.channelId;
+      navigate(`/user/${userId}/manage`, {
+        state: { channelId: channelId },
+      });
+    }
   };
 
   return (
@@ -156,7 +166,7 @@ const UserPage = () => {
               <h2 className="text-2xl font-bold mb-4">
                 Welcome, {userDetails?.username}!
               </h2>
-              <div className="w-48 h-48">
+              <div className="flex items-center justify-center w-48 h-48">
                 <AvatarShow avatarUrl={userDetails?.avatar} />
               </div>
               <p className="text-lg">Email: {userDetails?.email}</p>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFetchVideosQuery } from "../store/apiSlice";
 import Loader from "./Helpers/Loader";
 import VideoItemCard from "./VideoCard/VideoItemCard";
@@ -6,15 +6,40 @@ import VideoItemCard from "./VideoCard/VideoItemCard";
 const HomePage = () => {
   const [selectedTag, setSelectedTag] = useState("All");
   const { data: videos, error, isLoading } = useFetchVideosQuery();
+  const [orderedVideos, setOrderedVideos] = useState([]);
 
   const tags = [
-    "All", "Tech", "Lifestyle", "Entertainment", "Education", "Gaming",
-    "Food", "Sports", "Art & Design", "Science", "News", "Business", "Health", "Coding"
+    "All", "Tech", "Lifestyle", "Entertainment", "Music", "Education", "Gaming",
+    "Food", "Art & Design", "News", "Business", "Health", "Coding"
   ];
 
+  // done to give a more natural ordering to the videos
+  useEffect(() => {
+    if (videos) {
+      const group1 = [];
+      const group2 = [];
+      const group3 = [];
+      const group4 = [];
+
+      videos.forEach((video, index) => {
+        if (index % 4 === 0) {
+          group1.push(video);
+        } else if (index % 4 === 1) {
+          group2.push(video);
+        } else if (index % 4 === 2) {
+          group3.push(video);
+        } else {
+          group4.push(video);
+        }
+      });
+
+      setOrderedVideos([...group1, ...group2, ...group3, ...group4]);
+    }
+  }, [videos]);
+
   const filteredVideos = selectedTag === "All"
-    ? videos
-    : videos?.filter(video => video.tags.includes(selectedTag));
+    ? orderedVideos
+    : orderedVideos.filter(video => video.tags.includes(selectedTag));
 
   if (isLoading) {
     return <Loader />;

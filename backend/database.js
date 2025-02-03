@@ -8,7 +8,8 @@ require("dotenv").config();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
-mongoose.connect("mongodb://localhost:27017/youtube");
+// mongoose.connect("mongodb://localhost:27017/youtube");
+mongoose.connect(process.env.MONGO_URI);
 const db = mongoose.connection;
 db.on("open", () => {
   console.log("Connection to db successful");
@@ -21,8 +22,8 @@ db.on("error", () => {
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.listen(1000, () => {
-  console.log("Server running on port 1000");
+app.listen(process.env.PORT, () => {
+  console.log("Server running on port ", process.env.PORT);
 });
 
 app.use("/user", userRoutes);

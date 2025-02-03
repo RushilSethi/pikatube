@@ -8,7 +8,7 @@ import store from "./store/store";
 import CustomToastContainer from "./components/Helpers/CustomToastContainer";
 import Loader from './components/Helpers/Loader.jsx';
 
-const HomePage = React.lazy(() => import('./components/homePage.jsx'));
+const HomePage = React.lazy(() => import('./components/HomePage.jsx'));
 const SearchPage = React.lazy(() => import('./components/SearchPage.jsx'));
 const VideoPage = React.lazy(() => import('./components/VideoPage.jsx'));
 const ChannelPage = React.lazy(() => import('./components/ChannelPage.jsx'));
