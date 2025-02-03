@@ -5,7 +5,7 @@ import {
   useDeleteVideoByIdMutation,
 } from "../store/apiSlice";
 import useCustomToast from "./Helpers/useCustomToast";
-import ManageVideos_videos from "./ManageVideos_Videos";
+import ManageVideos_videos from "./ManageVideos_videos";
 import Loader from "./Helpers/Loader";
 import EditVideoModal from "./Forms/EditVideoModal";
 
