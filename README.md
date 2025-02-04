@@ -88,11 +88,6 @@ Want to improve Pikatube? Feel free to fork the repo, make your changes, and sub
 
 ---
 
-## **📄 License**  
-This project is licensed under the **MIT License**.
-
----
-
 ## **🌟 Show Some Love!**  
 If you like this project, consider **starring** ⭐ the repo on GitHub!  
 
