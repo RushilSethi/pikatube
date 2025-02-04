@@ -21,7 +21,7 @@ const Navbar = ({ toggleSidebar }) => {
   const [isUserFormOpen, setIsUserFormOpen] = useState("");
 
   useEffect(() => {
-    console.log("Redux state updated:", { isSignedIn, userId });
+    // console.log("Redux state updated:", { isSignedIn, userId });
   }, [isSignedIn, userId]);
   
   const handleOpenLogin = () => {
@@ -49,11 +49,11 @@ const Navbar = ({ toggleSidebar }) => {
   }, [userId, isSignedIn, refetch]);
 
   useEffect(() => {
-    console.log("1st console")
-    console.log(userDetails)
+    // console.log("1st console")
+    // console.log(userDetails)
     if (userDetails) {
-      console.log("2nd console")
-      console.log(userDetails)
+      // console.log("2nd console")
+      // console.log(userDetails)
       setAvatarUrl(userDetails.avatar);
     }
   }, [userDetails]);

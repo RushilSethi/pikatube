@@ -26,7 +26,7 @@ const SearchPage = () => {
   const filteredVideos = filter === 'all' || filter === 'videos' ? videos : [];
   const filteredChannels = filter === 'all' || filter === 'channels' ? channels : [];
 
-  console.log(channels);
+  // console.log(channels);
 
   return (
     <div className="p-4 w-screen">

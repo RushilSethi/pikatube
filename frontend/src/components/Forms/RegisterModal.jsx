@@ -62,7 +62,7 @@ const RegisterModal = ({ isOpen, handleClose, handleLogin }) => {
         avatar: selectedAvatar,
       }).unwrap();
       showToast("success", registerResponse.message);
-      console.log(registerResponse);
+      // console.log(registerResponse);
 
       const loginResponse = await loginUser({ email, password }).unwrap();
       localStorage.setItem("AuthToken", loginResponse.token);
@@ -74,7 +74,7 @@ const RegisterModal = ({ isOpen, handleClose, handleLogin }) => {
       dispatch(signIn());
     } catch (error) {
       setErrorMessage("Registration failed. Please try again.");
-      console.log(error);
+      // console.log(error);
       showToast("error", error.data.message);
     }
   };

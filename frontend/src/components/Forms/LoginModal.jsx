@@ -44,12 +44,12 @@ const LoginModal = ({ isOpen, handleClose, handleRegister }) => {
     try {
       const response = await loginUser({ email, password }).unwrap();
       localStorage.setItem("AuthToken", response.token);
-      console.log("Token saved:", response.token);
+      // console.log("Token saved:", response.token);
       showToast("success", response.message);
       handleCancel();
       dispatch(signIn());
     } catch (error) {
-      console.log("Error caught:", error);
+      // console.log("Error caught:", error);
       setErrorMessage("Registration failed. Please try again.");
       showToast("error", error.data.message);
     }

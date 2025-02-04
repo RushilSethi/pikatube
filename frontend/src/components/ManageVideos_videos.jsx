@@ -13,7 +13,7 @@ const ManageVideos_videos = ({ videoIds, handleDelete, handleEditButton, refetch
     if (videoIds && videoIds.length > 0) {
       getMultipleVideosByIds(videoIds)
         .then((response) => {
-            console.log(response)
+            // console.log(response)
           setVideos(response?.data || []);
         })
         .catch((err) => {

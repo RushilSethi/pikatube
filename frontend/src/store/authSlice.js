@@ -8,10 +8,10 @@ const authSlice = createSlice({
   reducers: {
     signIn: (state) => {
       state.isSignedIn = true;
-      console.log("user signed in via redux")
+      // console.log("user signed in via redux")
     },
     signOut: (state) => {
-      console.log("signedOut")
+      // console.log("signedOut")
       localStorage.removeItem("AuthToken");
       state.isSignedIn = false;
     },

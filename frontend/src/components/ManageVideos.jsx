@@ -11,8 +11,8 @@ import EditVideoModal from "./Forms/EditVideoModal";
 
 const ManageVideos = () => {
   const location = useLocation();
-  console.log(`location from managevideos page: ${location}`);
-  console.log(location);
+  // console.log(`location from managevideos page: ${location}`);
+  // console.log(location);
   const { channelId } = location.state || {};
   const { data: channelDetails, isLoading, error } = useFetchChannelByIdQuery(channelId);
   const [deleteVideoById, { isLoading: isDeleting }] = useDeleteVideoByIdMutation();
@@ -42,7 +42,7 @@ const ManageVideos = () => {
       if (confirm) {
         try {
           const response = await deleteVideoById({ id: videoId }).unwrap();
-          console.log(response);
+          // console.log(response);
           showToast("success", "Video deleted successfully!");
         } catch (error) {
           showToast("error", "Failed to delete video. Please try again.");

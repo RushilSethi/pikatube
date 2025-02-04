@@ -26,7 +26,7 @@ const CreateChannelModal = ({ isOpen, handleClose }) => {
 
     try {
       const response = await createChannel({ channelName, description }).unwrap();
-      console.log(response);
+      // console.log(response);
       showToast("success", `Channel created successfully.`);
       handleCancel();
     } catch (error) {

@@ -46,7 +46,7 @@ const EditChannelModal = ({ isOpen, handleClose, userDetails }) => {
         id: channelId,
         body: { channelName: channelName, description },
       }).unwrap();
-      console.log(response);
+      // console.log(response);
       showToast("success", `Channel updated successfully.`);
       handleCancel();
     } catch (error) {

@@ -21,14 +21,14 @@ function App() {
   const [validateToken] = useValidateTokenMutation();
 
   useEffect(() => {
-    console.log("token check started");
+    // console.log("token check started");
     const token = localStorage.getItem("AuthToken");
 
     if (token) {
       validateToken(token)
         .unwrap()
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (response.isValid) {
             dispatch(signIn());
             dispatch(setUserId(response.user.id));

@@ -26,7 +26,7 @@ const SearchItemCard = ({
     }
 
     try {
-      console.log("Increasing views for video ID:", id);
+      // console.log("Increasing views for video ID:", id);
       await increaseViews({ id, body: { views: views + 1 } }).unwrap();
     } catch (error) {
       console.error("Failed to increment views:", error);

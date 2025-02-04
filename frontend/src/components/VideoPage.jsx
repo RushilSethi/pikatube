@@ -37,7 +37,7 @@ const VideoPage = () => {
     );
   }
 
-  console.log(videoDetails);
+  // console.log(videoDetails);
 
 
   function handleSubscribe() {
@@ -67,7 +67,7 @@ const VideoPage = () => {
 
     if (comment.trim() === "") return;
 
-    console.log("Posting comment:", comment);
+    // console.log("Posting comment:", comment);
 
     manageVideoInteraction({ id, body: { comment: { text: comment } } })
       .unwrap()
