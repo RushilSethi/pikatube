@@ -121,7 +121,7 @@ const EditChannelModal = ({ isOpen, handleClose, userDetails }) => {
   );
 };
 
-EditChannelModal.Proptypes = {
+EditChannelModal.proptypes = {
   userDetails: PropTypes.object.isRequired,
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
