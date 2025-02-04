@@ -46,7 +46,11 @@ const HomePage = () => {
   }
 
   if (error) {
-    return <p className="text-center text-red-500">Error loading videos. Please try again later.</p>;
+    return (
+      <p className="text-center text-red-500">
+        The service is temporarily unavailable. This could be due to server maintenance, network issues, or usage limits. Please try again later.
+      </p>
+    );
   }
 
   return (
