@@ -1,12 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Helper function to load from localStorage
 const loadSubscriptions = () => {
   const data = localStorage.getItem("subscriptions");
   return data ? JSON.parse(data) : [];
 };
 
-// Helper function to save to localStorage
 const saveSubscriptions = (subscriptions) => {
   localStorage.setItem("subscriptions", JSON.stringify(subscriptions));
 };
