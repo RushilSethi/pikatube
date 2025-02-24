@@ -8,6 +8,7 @@ import { useValidateTokenMutation } from "./store/apiSlice";
 import { signIn, signOut } from "./store/authSlice";
 import { setUserId } from "./store/userSlice";
 import useCustomToast from "./components/Helpers/useCustomToast";
+import Footer from "./components/Footer";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -51,7 +52,7 @@ function App() {
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar}/>
         <Outlet />
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

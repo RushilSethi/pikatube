@@ -32,6 +32,30 @@ exports.fetchChannels = async (req, res) => {
   }
 };
 
+exports.getChannelsByIds = async (req, res) => {
+  const { ids } = req.body;
+  console.log("Received body:", req.body);
+
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: 'Invalid or missing channel IDs' });
+  }
+
+  try {
+    const channels = await Channel.find({ '_id': { $in: ids } })
+      .populate('userId', 'avatar')
+      .exec();
+
+    if (channels.length === 0) {
+      return res.status(404).json({ message: 'No channels found for the provided IDs' });
+    }
+
+    res.status(200).json(channels);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error, please try again later' });
+  }
+};
+
 exports.createChannel = async (req, res) => {
   const { channelName, description } = req.body;
 

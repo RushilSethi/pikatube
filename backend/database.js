@@ -24,7 +24,7 @@ app.use(express.json());
 // app.use(cors());
 app.use(
   cors({
-    origin: "https://pikatube.vercel.app",
+    origin: ["https://pikatube.vercel.app", "http://localhost:5174"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

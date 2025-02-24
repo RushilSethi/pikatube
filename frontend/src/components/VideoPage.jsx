@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import AvatarShow from "./Helpers/AvatarShow";
 import { useParams, Link } from "react-router-dom";
@@ -8,11 +8,14 @@ import {
 } from "../store/apiSlice";
 import Loader from "./Helpers/Loader";
 import TruncateText from "./Helpers/TruncateText";
-import { useSelector } from "react-redux";
 import useCustomToast from "./Helpers/useCustomToast";
 import { formatDistanceToNow } from "date-fns";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSubscription } from "../store/subscriptionsSlice";
 
 const VideoPage = () => {
+  const dispatch = useDispatch();
+  const subscriptions = useSelector((state) => state.subscriptions);
   const [manageVideoInteraction, { isLoading }] =
     useManageVideoInteractionMutation();
   const [comment, setComment] = useState("");
@@ -27,6 +30,12 @@ const VideoPage = () => {
     isLoading: isVideoLoading,
   } = useFetchVideoByIdQuery(id);
 
+  useEffect(() => {
+    if (videoDetails) {
+      setIsSubscribed(subscriptions.includes(videoDetails.channelId));
+    }
+  }, [videoDetails, subscriptions]);
+
   if (isVideoLoading) return <Loader />;
 
   if (videoError) {
@@ -39,9 +48,11 @@ const VideoPage = () => {
 
   // console.log(videoDetails);
 
-
   function handleSubscribe() {
-    setIsSubscribed(!isSubscribed);
+    if (!videoDetails) return;
+  
+    dispatch(toggleSubscription(videoDetails.channelId));
+    setIsSubscribed((prev) => !prev); // Toggle subscription state
   }
 
   function handleLike() {

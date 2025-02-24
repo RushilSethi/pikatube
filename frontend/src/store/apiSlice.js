@@ -144,6 +144,13 @@ export const apiSlice = createApi({
         body
       }),
       invalidatesTags: ({ id }) => [{ type: 'Video', id }],
+    }),
+    getChannelsByIds: builder.mutation({
+      query: (body) => ({
+        url: 'channel/by-ids',
+        method: "POST",
+        body
+      })
     })
   }),
 });
@@ -167,5 +174,6 @@ export const {
   useDeleteUserByIdMutation,
   useSearchVideosAndChannelsQuery,
   useManageVideoInteractionMutation,
-  useIncreaseViewsMutation
+  useIncreaseViewsMutation,
+  useGetChannelsByIdsMutation
 } = apiSlice;

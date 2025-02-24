@@ -1,37 +1,65 @@
+import { useSelector, useDispatch } from "react-redux";
+import { toggleSubscription } from "../store/subscriptionsSlice";
+import { useGetChannelsByIdsMutation } from "../store/apiSlice";
+import { useEffect, useState } from "react";
+import Loader from "./Helpers/Loader";
+
 const SubscriptionsPage = () => {
-    const dummySubscriptions = [
-      { id: 1, name: "Tech", avatar: " https://placehold.co/600x400?text=No+Subscriptions+Yet" },
-      { id: 2, name: "Gaming", avatar: " https://placehold.co/600x400?text=No+Subscriptions+Yet" },
-      { id: 3, name: "Vlogs", avatar: " https://placehold.co/600x400?text=No+Subscriptions+Yet" },
-      { id: 4, name: "Music", avatar: " https://placehold.co/600x400?text=No+Subscriptions+Yet" },
-    ];
-  
-    return (
-      <div className="min-h-screen w-screen bg-background text-textPrimary p-6">
-        <p className="text-md text-textSecondary bg-hover p-3 rounded-md mb-4">
-          🚧 This is a dummy page and is currently under development.
-        </p>
-  
-        <h1 className="text-3xl font-semibold mb-4">Your Subscriptions</h1>
-  
+  const subscriptions = useSelector((state) => state.subscriptions);
+  const dispatch = useDispatch();
+  const [getChannelsByIds, { isLoading, error }] = useGetChannelsByIdsMutation();
+  const [channelData, setChannelData] = useState([]);
+
+  useEffect(() => {
+    if (subscriptions.length > 0) {
+      getChannelsByIds({ ids: subscriptions }).then((response) => {
+        if (response.data) {
+          setChannelData(response.data);
+        }
+      });
+    } else {
+      setChannelData([]);
+    }
+  }, [subscriptions, getChannelsByIds]);
+
+  if (isLoading) return <Loader />;
+  if (error) return <p className="text-center text-red-500">Error loading subscriptions.</p>;
+
+  return (
+    <div className="min-h-screen w-screen bg-background text-textPrimary p-6">
+      <p className="text-md text-textSecondary bg-hover p-3 rounded-md mb-4">
+        🚧 This is a dummy page and is currently under development.
+      </p>
+
+      <h1 className="text-3xl font-semibold mb-4">Your Subscriptions</h1>
+
+      {channelData.length === 0 ? (
+        <p className="text-center text-lg text-textSecondary">No subscriptions yet.</p>
+      ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {dummySubscriptions.map((channel) => (
+          {channelData.map((channel) => (
             <div
-              key={channel.id}
+              key={channel._id}
               className="bg-card p-4 rounded-lg flex cursor-pointer items-center gap-4 border border-border hover:bg-hover transition"
             >
               <img
-                src={channel.avatar}
-                alt={channel.name}
+                src={channel.userId?.avatar || "/default-avatar.png"}
+                alt={channel.channelName}
                 className="w-12 h-12 rounded-full border border-border"
               />
-              <p className="text-lg">{channel.name}</p>
+              <p className="text-lg">{channel.channelName}</p>
+              <button
+                className="ml-auto text-red-500 hover:text-red-700"
+                onClick={() => dispatch(toggleSubscription(channel._id))}
+              >
+                Unsubscribe
+              </button>
             </div>
           ))}
         </div>
-      </div>
-    );
-  };
-  
-  export default SubscriptionsPage;
-  
+      )}
+    </div>
+  );
+};
+
+export default SubscriptionsPage;

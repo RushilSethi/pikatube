@@ -8,9 +8,14 @@ import Loader from "./Helpers/Loader";
 import ChannelPage_videos from "./ChannelPage_videos";
 import TruncateText from "./Helpers/TruncateText";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSubscription } from "../store/subscriptionsSlice";
 
 const ChannelPage = () => {
   const { id } = useParams();
+
+  const dispatch = useDispatch();
+  const subscriptions = useSelector((state) => state.subscriptions);
 
   const {
     data: channelDetails,
@@ -37,6 +42,11 @@ const ChannelPage = () => {
     }
   }, [channelLoading, channelDetails]);
 
+  useEffect(() => {
+    console.log("Updated Subscriptions:", subscriptions);
+    setIsSubscribed(subscriptions.includes(id));
+  }, [subscriptions, id]);
+
   if (channelLoading || userLoading) return <Loader />;
 
   if (channelError) {
@@ -54,9 +64,12 @@ const ChannelPage = () => {
     );
   }
 
-  const handleSubscribe = () => {
-    setIsSubscribed(!isSubscribed);
-  };
+  function handleSubscribe() {
+    if (!channelDetails) return;
+  
+    dispatch(toggleSubscription(id));
+    setIsSubscribed((prev) => !prev); // Toggle subscription state
+  }
 
   return (
     <div className="flex flex-col  w-full min-w-0 overflow-hidden">

@@ -1,11 +1,12 @@
 const express = require("express");
 const { authenticate } = require("../Middleware/authMiddleware");
-const { fetchChannelDetails, fetchChannels, createChannel, updateChannel, deleteChannel } = require("../Controllers/channelController");
+const { fetchChannelDetails, fetchChannels, createChannel, updateChannel, deleteChannel, getChannelsByIds } = require("../Controllers/channelController");
 
 const router = express.Router();
 
 router.get('/:id', fetchChannelDetails);
 router.get('/', fetchChannels);
+router.post('/by-ids', getChannelsByIds); //multiple request for fetching channel details for subscriptions page
 router.post('/', authenticate, createChannel); 
 router.put('/:id', authenticate, updateChannel);
 router.delete('/:id', authenticate, deleteChannel);
