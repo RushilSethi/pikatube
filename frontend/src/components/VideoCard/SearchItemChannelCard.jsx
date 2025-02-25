@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import AvatarShow from "../Helpers/AvatarShow";
 import PropTypes from "prop-types";
+import TruncateText from "../Helpers/TruncateText";
 
 const SearchItemChannelCard = ({ id, channelName, avatar, description }) => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const SearchItemChannelCard = ({ id, channelName, avatar, description }) => {
         </h3>
 
         <p className="text-sm text-textSecondary mt-2 line-clamp-3">
-          {description}
+          <TruncateText text={description} length={75} showReadMore={true} />
         </p>
       </div>
     </div>

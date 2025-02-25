@@ -17,6 +17,7 @@ const ManageVideos = React.lazy(() => import('./components/ManageVideos.jsx'));
 const ErrorPage = React.lazy(() => import('./components/ErrorPage.jsx'));
 const SubscriptionsPage = React.lazy(() => import('./components/SubscriptionsPage.jsx'));
 const NoShortsPage = React.lazy(() => import('./components/NoShortsPage.jsx'));
+const RegulationsPage = React.lazy(() => import('./components/RegulationsPage.jsx'));
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "/", element: <HomePage /> },
       { path: "/subs", element: <SubscriptionsPage /> },
       { path: "/shorts", element: <NoShortsPage /> },
+      { path: "/rules", element: <RegulationsPage /> },
       { path: "/search/*", element: <SearchPage /> },
       { path: "/video/:id", element: <VideoPage /> },
       { path: "/channel/:id", element: <ChannelPage /> },

@@ -79,7 +79,7 @@ npm install
 ## **📢 Roadmap & Future Plans**  
 ✅ **Basic video upload & playback**  
 ✅ **User authentication & channels**  
-⬜ **Subscriptions & notifications** *(Under Development!)*    
+⬜ **Subscriptions & notifications** *(Subscriptions Added, Notifications Under Development!)*    
 
 ---
 

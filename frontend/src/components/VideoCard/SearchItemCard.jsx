@@ -3,6 +3,7 @@ import AvatarShow from "../Helpers/AvatarShow";
 import { useIncreaseViewsMutation } from "../../store/apiSlice";
 import { formatDistanceToNow } from "date-fns";
 import PropTypes from "prop-types";
+import TruncateText from "../Helpers/TruncateText";
 
 const SearchItemCard = ({
   id,
@@ -59,7 +60,7 @@ const SearchItemCard = ({
           </p>
 
           <p className="text-sm hidden md:flex text-textSecondary mt-2 line-clamp-3">
-            {description}
+            <TruncateText text={description} length={75} showReadMore={true} />
           </p>
         </div>
       </div>

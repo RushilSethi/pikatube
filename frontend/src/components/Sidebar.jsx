@@ -8,6 +8,7 @@ import folderIconFilled from "../assets/navbarIcons/folder-filled.svg";
 import playIconFilled from "../assets/navbarIcons/play-circle-filled.svg";
 import userIcon from "../assets/navbarIcons/user.svg";
 import logoutIcon from "../assets/navbarIcons/logout.svg";
+import rulesIcon from "../assets/navbarIcons/rules.svg";
 import useCustomToast from "./Helpers/useCustomToast";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../store/authSlice";
@@ -36,6 +37,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     } else {
       showToast("error", "Login or Signup to access this page");
     }
+  }
+  function RulesClick() {
+    navigate("/rules");
   }
   function LogoutClick() {
     if (isSignedIn) {
@@ -78,6 +82,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       iconActive: userIcon,
       route: "/user",
       onClick: UserClick,
+    },
+    {
+      label: "Platform Rules",
+      icon: rulesIcon,
+      iconActive: rulesIcon,
+      route: "/rules",
+      onClick: RulesClick,
     },
     {
       label: "Logout",
